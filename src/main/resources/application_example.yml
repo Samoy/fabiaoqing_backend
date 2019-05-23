@@ -1,0 +1,10 @@
+# 此文件是application.yml副本文件，运行时请将此文件重名为application.yml,并修改以下相关信息
+
+spring:
+  datasource:
+    url: 你的数据库url
+    username: 你的数据库用户名
+    password: 你的数据库密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  port: 8080

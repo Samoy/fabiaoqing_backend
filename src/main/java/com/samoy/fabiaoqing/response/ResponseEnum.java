@@ -1,6 +1,5 @@
 package com.samoy.fabiaoqing.response;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**

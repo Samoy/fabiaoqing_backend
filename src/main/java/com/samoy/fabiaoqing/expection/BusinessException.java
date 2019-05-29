@@ -1,5 +1,6 @@
 package com.samoy.fabiaoqing.expection;
 
+import com.samoy.fabiaoqing.response.ResponseEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +18,10 @@ public class BusinessException extends Exception {
     public BusinessException(Integer code, String message) {
         super(message);
         this.code = code;
+    }
+
+    public BusinessException(ResponseEnum responseEnum) {
+        super(responseEnum.getMessage());
+        this.code = responseEnum.getCode();
     }
 }

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--这是mbg副本文件，运行时请修改为自己的数据库等信息-->
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
     <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--添加反引号分隔符以防关键字冲突-->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
         <!--此处需要修改为自己的数据库信息-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="你的数据库URL"
@@ -12,12 +16,12 @@
                         password="你的数据库密码">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.samoy.fabiaoqing.dataobject" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.samoy.fabiaoqing.domainobject" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
@@ -25,10 +29,11 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="category" domainObjectName="CategoryDO" enableCountByExample="false"
+        <table tableName="t_category" domainObjectName="CategoryDO" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-
+               selectByExampleQueryId="false"
+               delimitAllColumns="true"
+               mapperName="CategoryDAO">
         </table>
     </context>
 </generatorConfiguration>

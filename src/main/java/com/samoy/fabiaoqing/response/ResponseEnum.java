@@ -13,7 +13,10 @@ public enum ResponseEnum {
      * 成功返回
      */
     SUCCESS(10000, "成功"),
-    ;
+    /**
+     * 未查询到任何类别
+     */
+    CATEGORY_NOT_FOUNT(20000, "未查询到任何类别");
     @Getter
     private Integer code;
     @Getter

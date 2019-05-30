@@ -3,6 +3,8 @@ package com.samoy.fabiaoqing.viewobject;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * 表情包类别VO
  *
@@ -14,4 +16,5 @@ import lombok.ToString;
 public class CategoryVO {
     private String objectId;
     private String name;
+    private List<CategoryVO> categoryVOList;
 }

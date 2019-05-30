@@ -3,6 +3,8 @@ package com.samoy.fabiaoqing.viewobject;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * 表情包分组VO
  *
@@ -11,9 +13,8 @@ import lombok.ToString;
  */
 @ToString
 @Data
-public class GroupVO {
+public class PackageVO {
     private String objectId;
     private String name;
-    private Integer count;
-    private CategoryVO category;
+    private List<EmoticonVO> list;
 }

@@ -8,6 +8,7 @@ import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,14 +28,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> findAll() throws BusinessException {
         List<CategoryDO> categoryDOList = categoryDAO.selectAll();
-        if (categoryDOList == null) {
+        if (CollectionUtils.isEmpty(categoryDOList)) {
             throw new BusinessException(ResponseEnum.CATEGORY_NOT_FOUNT);
         }
-        return categoryDOList.stream().map(this::covertDOToDTO)
+        return categoryDOList.stream().map(this::convertDOToDTO)
                 .collect(Collectors.toList());
     }
 
-    private CategoryDTO covertDOToDTO(CategoryDO categoryDO) {
+    private CategoryDTO convertDOToDTO(CategoryDO categoryDO) {
         CategoryDTO categoryDTO = new CategoryDTO();
         BeanUtils.copyProperties(categoryDO, categoryDTO);
         return categoryDTO;

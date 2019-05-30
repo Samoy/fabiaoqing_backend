@@ -35,5 +35,17 @@
                delimitAllColumns="true"
                mapperName="CategoryDAO">
         </table>
+        <table tableName="t_package" domainObjectName="PackageDO" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"
+               delimitAllColumns="true"
+               mapperName="PackageDAO">
+        </table>
+        <table tableName="t_emoticon" domainObjectName="EmoticonDO" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"
+               delimitAllColumns="true"
+               mapperName="EmoticonDAO">
+        </table>
     </context>
 </generatorConfiguration>

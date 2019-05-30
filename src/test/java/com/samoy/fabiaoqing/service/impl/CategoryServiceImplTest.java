@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class CategoryServiceImplTest {

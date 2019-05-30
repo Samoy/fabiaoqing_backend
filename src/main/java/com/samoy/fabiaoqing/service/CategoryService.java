@@ -6,7 +6,7 @@ import com.samoy.fabiaoqing.expection.BusinessException;
 import java.util.List;
 
 /**
- * 类别服务
+ * 类别服务接口
  *
  * @author Samoy
  * @date 2019-05-29

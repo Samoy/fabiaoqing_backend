@@ -6,6 +6,7 @@ import com.samoy.fabiaoqing.dto.CategoryDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.CategoryService;
+import com.samoy.fabiaoqing.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -31,13 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (CollectionUtils.isEmpty(categoryDOList)) {
             throw new BusinessException(ResponseEnum.CATEGORY_NOT_FOUNT);
         }
-        return categoryDOList.stream().map(this::convertDOToDTO)
+        return categoryDOList.stream().map(MyBeanUtils::convertCategoryDOToDTO)
                 .collect(Collectors.toList());
-    }
-
-    private CategoryDTO convertDOToDTO(CategoryDO categoryDO) {
-        CategoryDTO categoryDTO = new CategoryDTO();
-        BeanUtils.copyProperties(categoryDO, categoryDTO);
-        return categoryDTO;
     }
 }

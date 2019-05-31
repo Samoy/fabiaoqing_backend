@@ -6,6 +6,7 @@ import com.samoy.fabiaoqing.dto.EmoticonDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.EmoticonService;
+import com.samoy.fabiaoqing.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -32,12 +33,15 @@ public class EmoticonServiceImpl implements EmoticonService {
             throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
         }
         return emoticonDOList.stream()
-                .map(this::convertDOToDTO).collect(Collectors.toList());
+                .map(MyBeanUtils::convertEmoticonDOToDTO).collect(Collectors.toList());
     }
 
-    private EmoticonDTO convertDOToDTO(EmoticonDO emoticonDO) {
-        EmoticonDTO emoticonDTO = new EmoticonDTO();
-        BeanUtils.copyProperties(emoticonDO, emoticonDTO);
-        return emoticonDTO;
+    @Override
+    public EmoticonDTO findByObjectId(String objectId) throws BusinessException {
+        List<EmoticonDO> emoticonDOList = emoticonDAO.selectByObjectId(objectId);
+        if (CollectionUtils.isEmpty(emoticonDOList)) {
+            throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
+        }
+        return MyBeanUtils.convertEmoticonDOToDTO(emoticonDOList.get(0));
     }
 }

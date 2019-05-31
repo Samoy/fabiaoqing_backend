@@ -21,4 +21,13 @@ public interface EmoticonService {
      * @throws BusinessException 业务异常
      */
     List<EmoticonDTO> findByParentId(String parentId) throws BusinessException;
+
+    /**
+     * 通过id查询表情
+     *
+     * @param objectId id
+     * @return 表情
+     * @throws BusinessException 业务异常
+     */
+    EmoticonDTO findByObjectId(String objectId) throws BusinessException;
 }

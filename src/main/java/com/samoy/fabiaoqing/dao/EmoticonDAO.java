@@ -56,5 +56,7 @@ public interface EmoticonDAO {
 
     Integer countByParentId(String parentId);
 
+    List<EmoticonDO> selectByObjectId(String objectId);
+
     List<EmoticonDO> selectByParentId(String parentId);
 }

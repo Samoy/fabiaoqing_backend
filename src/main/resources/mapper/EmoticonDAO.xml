@@ -36,6 +36,11 @@
         where `object_id` = #{objectId,jdbcType=VARCHAR}
         and `parent_id` = #{parentId,jdbcType=VARCHAR}
     </select>
+    <select id="selectByObjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_emoticon where `object_id`=#{objectId,jdbcType=VARCHAR}
+    </select>
     <select id="selectByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

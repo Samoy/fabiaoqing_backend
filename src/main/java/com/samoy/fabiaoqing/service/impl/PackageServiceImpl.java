@@ -8,7 +8,7 @@ import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.service.PackageService;
-import org.springframework.beans.BeanUtils;
+import com.samoy.fabiaoqing.util.MyBeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -37,19 +37,14 @@ public class PackageServiceImpl implements PackageService {
         if (CollectionUtils.isEmpty(packageDOList)) {
             throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
-        return packageDOList.stream().map(this::convertDOToDTO).collect(Collectors.toList());
-    }
-
-    private PackageDTO convertDOToDTO(PackageDO packageDO) {
-        PackageDTO packageDTO = new PackageDTO();
-        BeanUtils.copyProperties(packageDO, packageDTO);
-        List<EmoticonDTO> emoticonDTOList = new ArrayList<>();
-        try {
-            emoticonDTOList = emoticonService.findByParentId(packageDO.getObjectId());
-        } catch (BusinessException e) {
-            e.printStackTrace();
-        }
-        packageDTO.setEmoticonDTOList(emoticonDTOList);
-        return packageDTO;
+        return packageDOList.stream().map(packageDO -> {
+            List<EmoticonDTO> emoticonDTOList = new ArrayList<>();
+            try {
+                emoticonDTOList = emoticonService.findByParentId(packageDO.getObjectId());
+            } catch (BusinessException e) {
+                e.printStackTrace();
+            }
+            return MyBeanUtils.convertPackageDOToDTO(packageDO, emoticonDTOList);
+        }).collect(Collectors.toList());
     }
 }

@@ -4,9 +4,8 @@ import com.samoy.fabiaoqing.dto.CategoryDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ApiResult;
 import com.samoy.fabiaoqing.service.CategoryService;
-import com.samoy.fabiaoqing.viewobject.CategoryVO;
+import com.samoy.fabiaoqing.util.MyBeanUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,13 +31,8 @@ public class CategoryController {
     @GetMapping("/list")
     public ApiResult list() throws BusinessException {
         List<CategoryDTO> categoryDTOList = categoryService.findAll();
-        return ApiResult.success(categoryDTOList.stream().map(this::covertDTOToVO)
+        return ApiResult.success(categoryDTOList.stream().map(MyBeanUtils::convertCategoryDTOToVO)
                 .collect(Collectors.toList()));
     }
 
-    private CategoryVO covertDTOToVO(CategoryDTO categoryDTO) {
-        CategoryVO categoryVO = new CategoryVO();
-        BeanUtils.copyProperties(categoryDTO, categoryVO);
-        return categoryVO;
-    }
 }

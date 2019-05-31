@@ -39,7 +39,7 @@
         select
         <include refid="Base_Column_List"/>
         from t_package where `parent_id`=#{parentId,jdbcType=VARCHAR}
-        order by seq ASC
+        order by seq asc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="com.samoy.fabiaoqing.domainobject.PackageDOKey">
         <!--

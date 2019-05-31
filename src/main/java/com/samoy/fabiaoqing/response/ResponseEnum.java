@@ -37,9 +37,18 @@ public enum ResponseEnum {
      */
     PACKAGE_NOT_FOUND(30000, "未查询到任何表情包"),
     /**
+     * 表情包id为空的错误信息
+     */
+    PACKAGE_ID_EMPTY(30001, "表情包id不能为空"),
+    /**
      * 表情列表为空的错误信息
      */
-    EMOTICON_NOT_FOUNT(40000, "未查询到任何表情");
+    EMOTICON_NOT_FOUNT(40000, "未查询到任何表情"),
+    /**
+     * 表情id为空的错误信息
+     */
+    EMOTICON_ID_EMPTY(40001, "表情id不能为空"),
+    ;
     @Getter
     private Integer code;
     @Getter

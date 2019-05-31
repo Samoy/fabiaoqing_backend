@@ -8,10 +8,7 @@ import com.samoy.fabiaoqing.response.ApiResult;
 import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.service.PackageService;
-import com.samoy.fabiaoqing.viewobject.EmoticonVO;
-import com.samoy.fabiaoqing.viewobject.PackageVO;
-import org.springframework.beans.BeanUtils;
-import org.springframework.util.CollectionUtils;
+import com.samoy.fabiaoqing.util.MyBeanUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +29,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/package")
 public class PackageController {
 
-    /**
-     * 列表展示表情包的最大张数
-     */
-    private static final int MAX_LIST_COUNT = 4;
-
     @Resource
     private PackageService packageService;
     @Resource
@@ -52,35 +44,17 @@ public class PackageController {
         }
         PageHelper.startPage(page, pageSize);
         List<PackageDTO> packageDTOList = packageService.findAll(categoryId);
-        return ApiResult.success(packageDTOList.stream().map(this::convertPackageDTOToVO).collect(Collectors.toList()));
+        return ApiResult.success(packageDTOList.stream().map(MyBeanUtils::convertPackageDTOToVO).collect(Collectors.toList()));
     }
 
-    /**
-     * 表情包DTO转VO
-     *
-     * @param packageDTO 表情包DTO
-     * @return 表情包VO
-     */
-    private PackageVO convertPackageDTOToVO(PackageDTO packageDTO) {
-        PackageVO packageVO = new PackageVO();
-        BeanUtils.copyProperties(packageDTO, packageVO);
-        List<EmoticonDTO> emoticonDTOList = packageDTO.getEmoticonDTOList();
-        if (!CollectionUtils.isEmpty(emoticonDTOList) && emoticonDTOList.size() > MAX_LIST_COUNT) {
-            packageVO.setList(emoticonDTOList.subList(0, MAX_LIST_COUNT)
-                    .stream().map(this::convertEmoticonDTOToVO).collect(Collectors.toList()));
+    @GetMapping("/list/detail")
+    public ApiResult packageDetail(@RequestParam(name = "id") String packageId) throws BusinessException {
+        if (StringUtils.isEmpty(packageId)) {
+            throw new BusinessException(ResponseEnum.PACKAGE_ID_EMPTY);
         }
-        return packageVO;
+        List<EmoticonDTO> emoticonDTOList = emoticonService.findByParentId(packageId);
+        return ApiResult.success(emoticonDTOList.stream().map(MyBeanUtils::convertEmoticonDTOToVO)
+                .collect(Collectors.toList()));
     }
 
-    /**
-     * 表情DTO转VO
-     *
-     * @param emoticonDTO 表情DTO
-     * @return 表情VO
-     */
-    private EmoticonVO convertEmoticonDTOToVO(EmoticonDTO emoticonDTO) {
-        EmoticonVO emoticonVO = new EmoticonVO();
-        BeanUtils.copyProperties(emoticonDTO, emoticonVO);
-        return emoticonVO;
-    }
 }

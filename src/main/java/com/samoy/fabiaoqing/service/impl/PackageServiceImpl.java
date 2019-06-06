@@ -9,6 +9,7 @@ import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.service.PackageService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @date 2019-05-30
  */
 @Service
+@Slf4j
 public class PackageServiceImpl implements PackageService {
 
     @Resource
@@ -37,14 +39,31 @@ public class PackageServiceImpl implements PackageService {
         if (CollectionUtils.isEmpty(packageDOList)) {
             throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
-        return packageDOList.stream().map(packageDO -> {
-            List<EmoticonDTO> emoticonDTOList = new ArrayList<>();
-            try {
-                emoticonDTOList = emoticonService.findByParentId(packageDO.getObjectId());
-            } catch (BusinessException e) {
-                e.printStackTrace();
-            }
-            return MyBeanUtils.convertPackageDOToDTO(packageDO, emoticonDTOList);
-        }).collect(Collectors.toList());
+        return packageDOList.stream()
+                .map(this::getPackageDTO)
+                .filter(packageDTO -> !CollectionUtils.isEmpty(packageDTO.getEmoticonDTOList()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PackageDTO> findByKeyword(String keyword) throws BusinessException {
+        List<PackageDO> packageDOList = packageDAO.selectByNameLike(keyword);
+        if (CollectionUtils.isEmpty(packageDOList)) {
+            throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
+        }
+        return packageDOList.stream()
+                .map(this::getPackageDTO)
+                .filter(packageDTO -> !CollectionUtils.isEmpty(packageDTO.getEmoticonDTOList()))
+                .collect(Collectors.toList());
+    }
+
+    private PackageDTO getPackageDTO(PackageDO packageDO) {
+        List<EmoticonDTO> emoticonDTOList = new ArrayList<>();
+        try {
+            emoticonDTOList = emoticonService.findByParentId(packageDO.getObjectId());
+        } catch (BusinessException e) {
+            e.printStackTrace();
+        }
+        return MyBeanUtils.convertPackageDOToDTO(packageDO, emoticonDTOList);
     }
 }

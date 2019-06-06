@@ -21,4 +21,13 @@ public interface PackageService {
      * @throws BusinessException 业务异常
      */
     List<PackageDTO> findAll(String parentId) throws BusinessException;
+
+    /**
+     * 通过关键字查询表情包
+     *
+     * @param keyword 关键字
+     * @return 表情包列表
+     * @throws BusinessException 业务异常
+     */
+    List<PackageDTO> findByKeyword(String keyword) throws BusinessException;
 }

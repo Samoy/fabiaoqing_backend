@@ -57,4 +57,14 @@ public class PackageController {
                 .collect(Collectors.toList()));
     }
 
+    @GetMapping("/list/search")
+    public ApiResult packageSearch(@RequestParam(defaultValue = "") String keyword,
+                                   @RequestParam(defaultValue = "1") int page,
+                                   @RequestParam(defaultValue = "10") int pageSize
+    ) throws BusinessException {
+        PageHelper.startPage(page, pageSize);
+        List<PackageDTO> packageDTOList = packageService.findByKeyword(keyword);
+        return ApiResult.success(packageDTOList.stream().map(MyBeanUtils::convertPackageDTOToVO).collect(Collectors.toList()));
+    }
+
 }

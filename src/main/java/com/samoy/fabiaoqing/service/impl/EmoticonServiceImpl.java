@@ -7,7 +7,6 @@ import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 

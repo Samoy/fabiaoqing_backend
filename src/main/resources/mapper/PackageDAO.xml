@@ -41,6 +41,11 @@
         from t_package where `parent_id`=#{parentId,jdbcType=VARCHAR}
         order by seq asc
     </select>
+    <select id="selectByNameLike" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_package where name like "%"#{nameLike,jdbcType=VARCHAR}"%"
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="com.samoy.fabiaoqing.domainobject.PackageDOKey">
         <!--
           WARNING - @mbg.generated

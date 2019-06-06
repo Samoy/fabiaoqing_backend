@@ -55,4 +55,6 @@ public interface PackageDAO {
     int updateByPrimaryKey(PackageDO record);
 
     List<PackageDO> selectByParentId(String parentId);
+
+    List<PackageDO> selectByNameLike(String nameLike);
 }

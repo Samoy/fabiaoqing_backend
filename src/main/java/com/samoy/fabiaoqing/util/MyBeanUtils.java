@@ -78,8 +78,8 @@ public class MyBeanUtils {
         PackageVO packageVO = new PackageVO();
         BeanUtils.copyProperties(packageDTO, packageVO);
         List<EmoticonDTO> emoticonDTOList = packageDTO.getEmoticonDTOList();
-        if (!CollectionUtils.isEmpty(emoticonDTOList) && emoticonDTOList.size() > MAX_LIST_COUNT) {
-            packageVO.setList(emoticonDTOList.subList(0, MAX_LIST_COUNT)
+        if (!CollectionUtils.isEmpty(emoticonDTOList)) {
+            packageVO.setList(emoticonDTOList.subList(0, emoticonDTOList.size() > MAX_LIST_COUNT ? MAX_LIST_COUNT : emoticonDTOList.size())
                     .stream().map(MyBeanUtils::convertEmoticonDTOToVO).collect(Collectors.toList()));
         }
         return packageVO;

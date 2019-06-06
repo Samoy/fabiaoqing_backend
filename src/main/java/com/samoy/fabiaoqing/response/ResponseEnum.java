@@ -25,6 +25,10 @@ public enum ResponseEnum {
      */
     PARAM_NOT_PRESENT(10002, "缺少参数"),
     /**
+     * MySQL连接超时错误信息
+     */
+    MYSQL_ERROR(10003, "数据库异常"),
+    /**
      * 查询类别列表为空的错误信息
      */
     CATEGORY_NOT_FOUNT(20000, "未查询到任何类别"),

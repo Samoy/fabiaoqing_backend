@@ -2,6 +2,7 @@
 .mvn
 application.yml
 mybatis-generator.xml
+*.pfx
 
 ### STS ###
 .apt_generated

@@ -16,5 +16,6 @@ import java.util.List;
 public class PackageVO {
     private String objectId;
     private String name;
+    private Integer count;
     private List<EmoticonVO> list;
 }

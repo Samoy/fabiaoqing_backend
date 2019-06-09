@@ -26,7 +26,7 @@ public class MyBeanUtils {
     /**
      * 列表展示表情包的最大张数
      */
-    private static final int MAX_LIST_COUNT = 4;
+    private static final int MAX_LIST_COUNT = 3;
 
 
     /**
@@ -79,6 +79,7 @@ public class MyBeanUtils {
         BeanUtils.copyProperties(packageDTO, packageVO);
         List<EmoticonDTO> emoticonDTOList = packageDTO.getEmoticonDTOList();
         if (!CollectionUtils.isEmpty(emoticonDTOList)) {
+            packageVO.setCount(emoticonDTOList.size());
             packageVO.setList(emoticonDTOList.subList(0, emoticonDTOList.size() > MAX_LIST_COUNT ? MAX_LIST_COUNT : emoticonDTOList.size())
                     .stream().map(MyBeanUtils::convertEmoticonDTOToVO).collect(Collectors.toList()));
         }

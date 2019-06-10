@@ -10,6 +10,7 @@ import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.service.PackageService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -28,16 +29,28 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PackageServiceImpl implements PackageService {
 
+    /**
+     * Redis键的前缀，为了区分不同的DO
+     */
+    private static final String REDIS_PREFIX = "package_";
+
     @Resource
     private PackageDAO packageDAO;
     @Resource
     private EmoticonService emoticonService;
+    @Resource
+    private RedisTemplate<String, List<PackageDO>> redisTemplate;
 
     @Override
     public List<PackageDTO> findAll(String parentId) throws BusinessException {
-        List<PackageDO> packageDOList = packageDAO.selectByParentId(parentId);
+        List<PackageDO> packageDOList = redisTemplate.opsForValue().get(parentId);
         if (CollectionUtils.isEmpty(packageDOList)) {
-            throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
+            packageDOList = packageDAO.selectByParentId(REDIS_PREFIX + parentId);
+            if (CollectionUtils.isEmpty(packageDOList)) {
+                throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
+            } else {
+                redisTemplate.opsForValue().set(REDIS_PREFIX + parentId, packageDOList);
+            }
         }
         return packageDOList.stream()
                 .map(this::getPackageDTO)
@@ -47,9 +60,14 @@ public class PackageServiceImpl implements PackageService {
 
     @Override
     public List<PackageDTO> findByKeyword(String keyword) throws BusinessException {
-        List<PackageDO> packageDOList = packageDAO.selectByNameLike(keyword);
+        List<PackageDO> packageDOList = redisTemplate.opsForValue().get(keyword);
         if (CollectionUtils.isEmpty(packageDOList)) {
-            throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
+            packageDOList = packageDAO.selectByNameLike(REDIS_PREFIX + keyword);
+            if (CollectionUtils.isEmpty(packageDOList)) {
+                throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
+            } else {
+                redisTemplate.opsForValue().set(REDIS_PREFIX + keyword, packageDOList);
+            }
         }
         return packageDOList.stream()
                 .map(this::getPackageDTO)

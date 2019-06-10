@@ -16,6 +16,7 @@ spring:
 ## 环境与框架
 * Jdk8
 * Mysql5.7
+* Redis
 * Maven
 * Springboot
 
@@ -25,3 +26,9 @@ spring:
 `mvn clean package`
 2. 运行
 `java -jar xxxx.jar`或者后台运行`nohup java -jar xxx.jar &`
+
+## TODOList
+1. Redis与MySQL的数据一致性
+2. "我的"模块
+3. "制图"模块
+4. "标签"模块

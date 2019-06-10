@@ -6,8 +6,6 @@ import com.samoy.fabiaoqing.response.ApiResult;
 import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
-import com.samoy.fabiaoqing.viewobject.EmoticonVO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

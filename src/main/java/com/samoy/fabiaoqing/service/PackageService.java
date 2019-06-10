@@ -1,6 +1,5 @@
 package com.samoy.fabiaoqing.service;
 
-import com.samoy.fabiaoqing.domainobject.PackageDO;
 import com.samoy.fabiaoqing.dto.PackageDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 

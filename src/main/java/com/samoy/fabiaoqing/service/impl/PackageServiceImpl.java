@@ -43,14 +43,14 @@ public class PackageServiceImpl implements PackageService {
 
     @Override
     public List<PackageDTO> findAll(String parentId) throws BusinessException {
-        List<PackageDO> packageDOList = redisTemplate.opsForValue().get(parentId);
+        List<PackageDO> packageDOList = redisTemplate.opsForValue().get(REDIS_PREFIX + parentId);
+        //当缓存中无数据时，从数据库中查询，无论查出数据是否为空都存入缓存，下次再次查询直接返回缓存中的数据，避免缓存击穿
+        if (packageDOList == null) {
+            packageDOList = packageDAO.selectByParentId(parentId);
+            redisTemplate.opsForValue().set(REDIS_PREFIX + parentId, packageDOList);
+        }
         if (CollectionUtils.isEmpty(packageDOList)) {
-            packageDOList = packageDAO.selectByParentId(REDIS_PREFIX + parentId);
-            if (CollectionUtils.isEmpty(packageDOList)) {
-                throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
-            } else {
-                redisTemplate.opsForValue().set(REDIS_PREFIX + parentId, packageDOList);
-            }
+            throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
         return packageDOList.stream()
                 .map(this::getPackageDTO)
@@ -60,14 +60,13 @@ public class PackageServiceImpl implements PackageService {
 
     @Override
     public List<PackageDTO> findByKeyword(String keyword) throws BusinessException {
-        List<PackageDO> packageDOList = redisTemplate.opsForValue().get(keyword);
+        List<PackageDO> packageDOList = redisTemplate.opsForValue().get(REDIS_PREFIX + keyword);
+        if (packageDOList == null) {
+            packageDOList = packageDAO.selectByNameLike(keyword);
+            redisTemplate.opsForValue().set(REDIS_PREFIX + keyword, packageDOList);
+        }
         if (CollectionUtils.isEmpty(packageDOList)) {
-            packageDOList = packageDAO.selectByNameLike(REDIS_PREFIX + keyword);
-            if (CollectionUtils.isEmpty(packageDOList)) {
-                throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
-            } else {
-                redisTemplate.opsForValue().set(REDIS_PREFIX + keyword, packageDOList);
-            }
+            throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
         return packageDOList.stream()
                 .map(this::getPackageDTO)

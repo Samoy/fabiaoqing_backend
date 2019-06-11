@@ -25,6 +25,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Resource
     private CategoryDAO categoryDAO;
 
+    /**
+     * 由于该业务本身就需要查询表的全部数据，且并发量并不大，几乎等于静态数据
+     * 因此无需使用Redis缓存。
+     *
+     * @return 所有类别数据
+     * @throws BusinessException 业务异常
+     */
     @Override
     public List<CategoryDTO> findAll() throws BusinessException {
         List<CategoryDO> categoryDOList = categoryDAO.selectAll();

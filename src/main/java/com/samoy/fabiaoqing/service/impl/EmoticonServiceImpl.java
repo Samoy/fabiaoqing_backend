@@ -36,14 +36,13 @@ public class EmoticonServiceImpl implements EmoticonService {
 
     @Override
     public List<EmoticonDTO> findByParentId(String parentId) throws BusinessException {
-        List<EmoticonDO> emoticonDOList = redisTemplate.opsForValue().get(parentId);
+        List<EmoticonDO> emoticonDOList = redisTemplate.opsForValue().get(REDIS_PREFIX + parentId);
+        if (emoticonDOList == null) {
+            emoticonDOList = emoticonDAO.selectByParentId(parentId);
+            redisTemplate.opsForValue().set(REDIS_PREFIX + parentId, emoticonDOList);
+        }
         if (CollectionUtils.isEmpty(emoticonDOList)) {
-            emoticonDOList = emoticonDAO.selectByParentId(REDIS_PREFIX + parentId);
-            if (CollectionUtils.isEmpty(emoticonDOList)) {
-                throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
-            } else {
-                redisTemplate.opsForValue().set(REDIS_PREFIX + parentId, emoticonDOList);
-            }
+            throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
         }
         return emoticonDOList.stream()
                 .map(MyBeanUtils::convertEmoticonDOToDTO).collect(Collectors.toList());
@@ -52,13 +51,12 @@ public class EmoticonServiceImpl implements EmoticonService {
     @Override
     public EmoticonDTO findByObjectId(String objectId) throws BusinessException {
         List<EmoticonDO> emoticonDOList = redisTemplate.opsForValue().get(REDIS_PREFIX + objectId);
+        if (emoticonDOList == null) {
+            emoticonDOList = emoticonDAO.selectByObjectId(objectId);
+            redisTemplate.opsForValue().set(REDIS_PREFIX + objectId, emoticonDOList);
+        }
         if (CollectionUtils.isEmpty(emoticonDOList)) {
-            emoticonDOList = emoticonDAO.selectByObjectId(REDIS_PREFIX + objectId);
-            if (CollectionUtils.isEmpty(emoticonDOList)) {
-                throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
-            } else {
-                redisTemplate.opsForValue().set(REDIS_PREFIX + objectId, emoticonDOList);
-            }
+            throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
         }
         return MyBeanUtils.convertEmoticonDOToDTO(emoticonDOList.get(0));
     }

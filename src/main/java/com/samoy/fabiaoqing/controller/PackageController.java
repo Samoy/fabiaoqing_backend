@@ -9,6 +9,7 @@ import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.service.PackageService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/package")
+@Slf4j
 public class PackageController {
 
     @Resource
@@ -43,7 +45,7 @@ public class PackageController {
             throw new BusinessException(ResponseEnum.CATEGORY_ID_EMPTY);
         }
         PageHelper.startPage(page, pageSize);
-        List<PackageDTO> packageDTOList = packageService.findAll(categoryId);
+        List<PackageDTO> packageDTOList = packageService.findAll(categoryId, page, pageSize);
         return ApiResult.success(packageDTOList.stream().map(MyBeanUtils::convertPackageDTOToVO).collect(Collectors.toList()));
     }
 
@@ -63,7 +65,7 @@ public class PackageController {
                                    @RequestParam(defaultValue = "10") int pageSize
     ) throws BusinessException {
         PageHelper.startPage(page, pageSize);
-        List<PackageDTO> packageDTOList = packageService.findByKeyword(keyword);
+        List<PackageDTO> packageDTOList = packageService.findByKeyword(keyword, page, pageSize);
         return ApiResult.success(packageDTOList.stream().map(MyBeanUtils::convertPackageDTOToVO).collect(Collectors.toList()));
     }
 

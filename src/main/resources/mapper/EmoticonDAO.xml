@@ -46,7 +46,7 @@
         <include refid="Base_Column_List"/>
         from t_emoticon
         where `parent_id` = #{parentId,jdbcType=VARCHAR}
-        order by `seq` asc
+        order by `seq`
     </select>
     <delete id="deleteByPrimaryKey" parameterType="com.samoy.fabiaoqing.domainobject.EmoticonDOKey">
         <!--

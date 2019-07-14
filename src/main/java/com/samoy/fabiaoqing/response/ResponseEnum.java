@@ -52,6 +52,10 @@ public enum ResponseEnum {
      * 表情id为空的错误信息
      */
     EMOTICON_ID_EMPTY(40001, "表情id不能为空"),
+    /**
+     * 标签列表为空的错误信息
+     */
+    TAG_NOT_FOUND(50000, "未查询到任何标签"),
     ;
     @Getter
     private Integer code;

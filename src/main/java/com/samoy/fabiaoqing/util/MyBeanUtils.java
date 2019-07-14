@@ -1,14 +1,18 @@
 package com.samoy.fabiaoqing.util;
 
+import com.samoy.fabiaoqing.dao.TagDAO;
 import com.samoy.fabiaoqing.domainobject.CategoryDO;
 import com.samoy.fabiaoqing.domainobject.EmoticonDO;
 import com.samoy.fabiaoqing.domainobject.PackageDO;
+import com.samoy.fabiaoqing.domainobject.TagDO;
 import com.samoy.fabiaoqing.dto.CategoryDTO;
 import com.samoy.fabiaoqing.dto.EmoticonDTO;
 import com.samoy.fabiaoqing.dto.PackageDTO;
+import com.samoy.fabiaoqing.dto.TagDTO;
 import com.samoy.fabiaoqing.viewobject.CategoryVO;
 import com.samoy.fabiaoqing.viewobject.EmoticonVO;
 import com.samoy.fabiaoqing.viewobject.PackageVO;
+import com.samoy.fabiaoqing.viewobject.TagVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -108,5 +112,29 @@ public class MyBeanUtils {
         EmoticonVO emoticonVO = new EmoticonVO();
         BeanUtils.copyProperties(emoticonDTO, emoticonVO);
         return emoticonVO;
+    }
+
+    /**
+     * 标签DO转DTO
+     *
+     * @param tagDO 标签DO
+     * @return 标签DTO
+     */
+    public static TagDTO convertTagDOToDTO(TagDO tagDO) {
+        TagDTO tagDTO = new TagDTO();
+        BeanUtils.copyProperties(tagDO, tagDTO);
+        return tagDTO;
+    }
+
+    /**
+     * 标签DTO转VO
+     *
+     * @param tagDTO 标签DTO
+     * @return 标签VO
+     */
+    public static TagVO convertTagDTOTOVO(TagDTO tagDTO) {
+        TagVO tagVO = new TagVO();
+        BeanUtils.copyProperties(tagDTO, tagVO);
+        return tagVO;
     }
 }

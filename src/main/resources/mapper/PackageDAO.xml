@@ -44,7 +44,7 @@
     <select id="selectByNameLike" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from t_package where name like "%"#{nameLike,jdbcType=VARCHAR}"%"
+        from t_package where name like "%"#{nameLike,jdbcType=VARCHAR}"%" group by `object_id` order by `seq` desc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="com.samoy.fabiaoqing.domainobject.PackageDOKey">
         <!--

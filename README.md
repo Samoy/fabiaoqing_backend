@@ -1,7 +1,7 @@
 # 发表情后台
 
 ## 注意(非常重要)
-由于避免隐私泄露，因此将application.yml重命名为了application.example.yml，因此运行时需要将此文件重新改为application.yml,并修改一下信息
+由于避免隐私泄露，因此将application.yml重命名为了application.example.yml，因此运行时需要将此文件重新改为application.yml,并修改以下信息
 ```yaml
 spring:
   datasource:
@@ -14,7 +14,7 @@ spring:
 <https://github.com/Samoy/fabiaoqing/blob/master/database.sql>
 
 ## 环境与框架
-* Jdk8
+* Jdk1.8
 * Mysql5.7
 * Redis
 * Maven
@@ -28,7 +28,7 @@ spring:
 `java -jar xxxx.jar`或者后台运行`nohup java -jar xxx.jar &`
 
 ## TODOList
-1. Redis与MySQL的数据一致性
+~~1. Redis与MySQL的数据一致性~~
 2. "我的"模块
 3. "制图"模块
 4. "标签"模块

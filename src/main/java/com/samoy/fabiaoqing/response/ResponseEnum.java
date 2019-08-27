@@ -21,13 +21,17 @@ public enum ResponseEnum {
      */
     UNKNOWN_ERROR(10001, "未知错误"),
     /**
-     * 缺少参数错误信息
+     * 服务器内部异常
      */
-    PARAM_NOT_PRESENT(10002, "缺少参数"),
+    INTERNAL_ERROR(10002, "服务器内部异常"),
     /**
      * MySQL连接超时错误信息
      */
     MYSQL_ERROR(10003, "数据库异常"),
+    /**
+     * 缺少参数错误信息
+     */
+    PARAM_NOT_PRESENT(10004, "缺少参数"),
     /**
      * 查询类别列表为空的错误信息
      */

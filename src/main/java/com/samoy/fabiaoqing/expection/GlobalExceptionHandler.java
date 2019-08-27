@@ -2,6 +2,7 @@ package com.samoy.fabiaoqing.expection;
 
 import com.samoy.fabiaoqing.response.ApiResult;
 import com.samoy.fabiaoqing.response.ResponseEnum;
+import io.lettuce.core.RedisConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -45,6 +46,18 @@ public class GlobalExceptionHandler {
             return ApiResult.failure(ResponseEnum.PARAM_NOT_PRESENT.getCode(), ResponseEnum.PARAM_NOT_PRESENT.getMessage());
         }
         return ApiResult.failure(ResponseEnum.UNKNOWN_ERROR.getCode(), ResponseEnum.UNKNOWN_ERROR.getMessage());
+    }
+
+    /**
+     * 运行时异常处理
+     *
+     * @param request   请求
+     * @param exception 运行时异常
+     * @return json
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public ApiResult runtimeException(HttpServletRequest request, RuntimeException exception) {
+        return ApiResult.failure(ResponseEnum.INTERNAL_ERROR.getCode(), ResponseEnum.INTERNAL_ERROR.getMessage());
     }
 
     /**

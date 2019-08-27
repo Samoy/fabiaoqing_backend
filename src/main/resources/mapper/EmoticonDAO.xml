@@ -48,6 +48,12 @@
         where `parent_id` = #{parentId,jdbcType=VARCHAR}
         order by `seq`
     </select>
+    <select id="selectByNameLike" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_emoticon where name like "%"#{nameLike,jdbcType=VARCHAR}"%" group by `object_id` order by update_time
+        desc,`seq`
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="com.samoy.fabiaoqing.domainobject.EmoticonDOKey">
         <!--
           WARNING - @mbg.generated

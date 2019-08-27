@@ -60,4 +60,20 @@ public class EmoticonServiceImpl implements EmoticonService {
         }
         return MyBeanUtils.convertEmoticonDOToDTO(emoticonDOList.get(0));
     }
+
+    @Override
+    public List<EmoticonDTO> findByKeyword(String keyword, Integer page, Integer pageSize) throws BusinessException {
+        String redisKey = REDIS_PREFIX + "p_" + page + "_s_" + pageSize + "_" + keyword;
+        List<EmoticonDO> emoticonDOList = redisTemplate.opsForValue().get(redisKey);
+        if (emoticonDOList == null) {
+            emoticonDOList = emoticonDAO.selectByNameLike(keyword);
+            redisTemplate.opsForValue().set(redisKey, emoticonDOList);
+        }
+        if (CollectionUtils.isEmpty(emoticonDOList)) {
+            throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
+        }
+        return emoticonDOList.stream()
+                .map(MyBeanUtils::convertEmoticonDOToDTO)
+                .collect(Collectors.toList());
+    }
 }

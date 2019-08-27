@@ -1,5 +1,6 @@
 package com.samoy.fabiaoqing.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.samoy.fabiaoqing.dto.EmoticonDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ApiResult;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 表情Controller
@@ -34,5 +37,16 @@ public class EmoticonController {
         }
         EmoticonDTO emoticonDTO = emoticonService.findByObjectId(objectId);
         return ApiResult.success(MyBeanUtils.convertEmoticonDTOToVO(emoticonDTO));
+    }
+
+    @GetMapping("/search")
+    public ApiResult getEmoticonListBySearch(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) throws BusinessException {
+        PageHelper.startPage(page, pageSize);
+        List<EmoticonDTO> emoticonDTOList = emoticonService.findByKeyword(keyword, page, pageSize);
+        return ApiResult.success(emoticonDTOList.stream().map(MyBeanUtils::convertEmoticonDTOToVO).collect(Collectors.toList()));
     }
 }

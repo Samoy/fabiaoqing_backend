@@ -59,4 +59,6 @@ public interface EmoticonDAO {
     List<EmoticonDO> selectByObjectId(String objectId);
 
     List<EmoticonDO> selectByParentId(String parentId);
+
+    List<EmoticonDO> selectByNameLike(String nameLike);
 }

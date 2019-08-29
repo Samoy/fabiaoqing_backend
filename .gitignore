@@ -3,6 +3,7 @@
 application.yml
 mybatis-generator.xml
 *.pfx
+/log/
 
 ### STS ###
 .apt_generated

@@ -1,6 +1,5 @@
 package com.samoy.fabiaoqing.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.samoy.fabiaoqing.dto.EmoticonDTO;
 import com.samoy.fabiaoqing.dto.PackageDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
@@ -44,7 +43,6 @@ public class PackageController {
         if (StringUtils.isEmpty(categoryId)) {
             throw new BusinessException(ResponseEnum.CATEGORY_ID_EMPTY);
         }
-        PageHelper.startPage(page, pageSize);
         List<PackageDTO> packageDTOList = packageService.findAll(categoryId, page, pageSize);
         return ApiResult.success(packageDTOList.stream().map(MyBeanUtils::convertPackageDTOToVO).collect(Collectors.toList()));
     }
@@ -64,7 +62,6 @@ public class PackageController {
                                    @RequestParam(defaultValue = "1") int page,
                                    @RequestParam(defaultValue = "10") int pageSize
     ) throws BusinessException {
-        PageHelper.startPage(page, pageSize);
         List<PackageDTO> packageDTOList = packageService.findByKeyword(keyword, page, pageSize);
         return ApiResult.success(packageDTOList.stream().map(MyBeanUtils::convertPackageDTOToVO).collect(Collectors.toList()));
     }

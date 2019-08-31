@@ -53,5 +53,5 @@ public interface TagDAO {
      */
     int updateByPrimaryKey(TagDO record);
 
-    List<TagDO> selectTagsRandom(Integer count);
+    List<TagDO> selectTagsRandom(Integer size);
 }

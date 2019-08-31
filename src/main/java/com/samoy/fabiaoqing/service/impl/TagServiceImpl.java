@@ -8,10 +8,10 @@ import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.TagService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +28,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<TagDTO> findRandTags(Integer count) throws BusinessException {
         List<TagDO> tagDOS = tagDAO.selectTagsRandom(count);
-        if (CollectionUtils.isEmpty(tagDOS)) {
+        if (Objects.isNull(tagDOS)) {
             throw new BusinessException(ResponseEnum.TAG_NOT_FOUND);
         }
         return tagDOS.stream().map(MyBeanUtils::convertTagDOToDTO).collect(Collectors.toList());

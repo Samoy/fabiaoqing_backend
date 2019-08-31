@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public ApiResult businessExceptionHandler(HttpServletRequest request, BusinessException exception) {
-        log.error("业务异常:{}", exception.getMessage());
+        log.error("业务异常:{},请求是:{}", exception.getMessage(), request.getRequestURI());
         return ApiResult.failure(exception.getCode(), exception.getMessage());
     }
 
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ServletRequestBindingException.class)
     public ApiResult paramExceptionHandler(HttpServletRequest request, ServletRequestBindingException exception) {
-        log.error("参数异常:{}", exception.getMessage());
+        log.error("参数异常:{},请求是:{}", exception.getMessage(), request.getRequestURI());
         if (exception instanceof MissingServletRequestParameterException) {
             return ApiResult.failure(ResponseEnum.PARAM_NOT_PRESENT.getCode(), ResponseEnum.PARAM_NOT_PRESENT.getMessage());
         }
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public ApiResult runtimeException(HttpServletRequest request, RuntimeException exception) {
-        log.error("运行时异常:{}", exception.getMessage());
+        log.error("运行时异常:{},请求是:{}", exception.getMessage(), request.getRequestURI());
         return ApiResult.failure(ResponseEnum.INTERNAL_ERROR.getCode(), ResponseEnum.INTERNAL_ERROR.getMessage());
     }
 
@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MyBatisSystemException.class)
     public ApiResult dbExceptionHandler(HttpServletRequest request, MyBatisSystemException exception) {
-        log.error("数据库异常:{}", exception.getMessage());
+        log.error("数据库异常:{},请求是:{}", exception.getMessage(), request.getRequestURI());
         return ApiResult.failure(ResponseEnum.MYSQL_ERROR.getCode(), "服务器错误,请稍后再试");
     }
 }

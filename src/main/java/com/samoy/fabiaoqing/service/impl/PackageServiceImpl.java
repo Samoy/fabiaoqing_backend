@@ -1,5 +1,6 @@
 package com.samoy.fabiaoqing.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.samoy.fabiaoqing.dao.PackageDAO;
 import com.samoy.fabiaoqing.domainobject.PackageDO;
 import com.samoy.fabiaoqing.dto.EmoticonDTO;
@@ -17,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -47,10 +49,11 @@ public class PackageServiceImpl implements PackageService {
         List<PackageDO> packageDOList = redisTemplate.opsForValue().get(redisKey);
         //当缓存中无数据时，从数据库中查询，无论查出数据是否为空都存入缓存，下次再次查询直接返回缓存中的数据，避免缓存击穿
         if (packageDOList == null) {
+            PageHelper.startPage(page, pageSize);
             packageDOList = packageDAO.selectByParentId(parentId);
             redisTemplate.opsForValue().set(redisKey, packageDOList);
         }
-        if (CollectionUtils.isEmpty(packageDOList)) {
+        if (Objects.isNull(packageDOList)) {
             throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
         return packageDOList.stream()
@@ -64,10 +67,11 @@ public class PackageServiceImpl implements PackageService {
         String redisKey = REDIS_PREFIX + "p_" + page + "_s_" + pageSize + "_" + keyword;
         List<PackageDO> packageDOList = redisTemplate.opsForValue().get(redisKey);
         if (packageDOList == null) {
+            PageHelper.startPage(page, pageSize);
             packageDOList = packageDAO.selectByNameLike(keyword);
             redisTemplate.opsForValue().set(redisKey, packageDOList);
         }
-        if (CollectionUtils.isEmpty(packageDOList)) {
+        if (Objects.isNull(packageDOList)) {
             throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
         return packageDOList.stream()

@@ -1,6 +1,5 @@
 package com.samoy.fabiaoqing.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.samoy.fabiaoqing.dto.EmoticonDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ApiResult;
@@ -45,7 +44,6 @@ public class EmoticonController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize
     ) throws BusinessException {
-        PageHelper.startPage(page, pageSize);
         List<EmoticonDTO> emoticonDTOList = emoticonService.findByKeyword(keyword, page, pageSize);
         return ApiResult.success(emoticonDTOList.stream().map(MyBeanUtils::convertEmoticonDTOToVO).collect(Collectors.toList()));
     }

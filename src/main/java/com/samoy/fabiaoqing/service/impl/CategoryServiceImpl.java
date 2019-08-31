@@ -8,10 +8,10 @@ import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.CategoryService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> findAll() throws BusinessException {
         List<CategoryDO> categoryDOList = categoryDAO.selectAll();
-        if (CollectionUtils.isEmpty(categoryDOList)) {
+        if (Objects.isNull(categoryDOList)) {
             throw new BusinessException(ResponseEnum.CATEGORY_NOT_FOUNT);
         }
         return categoryDOList.stream().map(MyBeanUtils::convertCategoryDOToDTO)

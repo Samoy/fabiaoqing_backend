@@ -47,5 +47,11 @@
                delimitAllColumns="true"
                mapperName="EmoticonDAO">
         </table>
+        <table tableName="t_user" domainObjectName="UserDO" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"
+               delimitAllColumns="true"
+               mapperName="UserDAO">
+        </table>
     </context>
 </generatorConfiguration>

@@ -28,6 +28,6 @@ public class TagController {
     @GetMapping("/rand_list")
     public ApiResult getRandTags(@RequestParam(defaultValue = "10") Integer count) throws BusinessException {
         List<TagDTO> tagDTOS = tagService.findRandTags(count);
-        return ApiResult.success(tagDTOS.stream().map(MyBeanUtils::convertTagDTOTOVO));
+        return ApiResult.success(tagDTOS.stream().map(MyBeanUtils::convertTagDTOToVO));
     }
 }

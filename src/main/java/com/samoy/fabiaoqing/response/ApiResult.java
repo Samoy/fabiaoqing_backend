@@ -33,4 +33,8 @@ public class ApiResult {
     public static ApiResult failure(Integer code, String message) {
         return ApiResult.create(code, message, null);
     }
+
+    public static ApiResult failure(ResponseEnum responseEnum){
+        return ApiResult.failure(responseEnum.getCode(),responseEnum.getMessage());
+    }
 }

@@ -33,6 +33,14 @@ public enum ResponseEnum {
      */
     PARAM_NOT_PRESENT(10004, "缺少参数"),
     /**
+     * 参数不合法的错误信息
+     */
+    PARAM_ILLEGAL(10005, "参数不合法"),
+    /**
+     * 不支持的请求格式异常
+     */
+    UNSUPPORTED_HTTP_TYPE(1006, "不支持的请求类型"),
+    /**
      * 查询类别列表为空的错误信息
      */
     CATEGORY_NOT_FOUNT(20000, "未查询到任何类别"),
@@ -60,6 +68,14 @@ public enum ResponseEnum {
      * 标签列表为空的错误信息
      */
     TAG_NOT_FOUND(50000, "未查询到任何标签"),
+    /**
+     * 手机号已被注册
+     */
+    TELEPHONE_EXISTS(60000, "手机号已被注册"),
+    /**
+     * 注册失败
+     */
+    REGISTER_FAILURE(60001, "注册失败"),
     ;
     @Getter
     private Integer code;

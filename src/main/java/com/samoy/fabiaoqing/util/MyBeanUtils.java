@@ -1,14 +1,8 @@
 package com.samoy.fabiaoqing.util;
 
 import com.samoy.fabiaoqing.dao.TagDAO;
-import com.samoy.fabiaoqing.domainobject.CategoryDO;
-import com.samoy.fabiaoqing.domainobject.EmoticonDO;
-import com.samoy.fabiaoqing.domainobject.PackageDO;
-import com.samoy.fabiaoqing.domainobject.TagDO;
-import com.samoy.fabiaoqing.dto.CategoryDTO;
-import com.samoy.fabiaoqing.dto.EmoticonDTO;
-import com.samoy.fabiaoqing.dto.PackageDTO;
-import com.samoy.fabiaoqing.dto.TagDTO;
+import com.samoy.fabiaoqing.domainobject.*;
+import com.samoy.fabiaoqing.dto.*;
 import com.samoy.fabiaoqing.viewobject.CategoryVO;
 import com.samoy.fabiaoqing.viewobject.EmoticonVO;
 import com.samoy.fabiaoqing.viewobject.PackageVO;
@@ -17,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -132,9 +127,22 @@ public class MyBeanUtils {
      * @param tagDTO 标签DTO
      * @return 标签VO
      */
-    public static TagVO convertTagDTOTOVO(TagDTO tagDTO) {
+    public static TagVO convertTagDTOToVO(TagDTO tagDTO) {
         TagVO tagVO = new TagVO();
         BeanUtils.copyProperties(tagDTO, tagVO);
         return tagVO;
+    }
+
+    /**
+     * 用户DTO转DO
+     *
+     * @param userDTO userDTO
+     * @return UserDO
+     */
+    public static UserDO convertUserDTOToDO(UserDTO userDTO) {
+        UserDO userDO = new UserDO();
+        userDTO.setObjectId(CommonUtils.randomObjectId());
+        BeanUtils.copyProperties(userDTO, userDO);
+        return userDO;
     }
 }

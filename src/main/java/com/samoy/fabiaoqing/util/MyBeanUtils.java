@@ -3,10 +3,7 @@ package com.samoy.fabiaoqing.util;
 import com.samoy.fabiaoqing.dao.TagDAO;
 import com.samoy.fabiaoqing.domainobject.*;
 import com.samoy.fabiaoqing.dto.*;
-import com.samoy.fabiaoqing.viewobject.CategoryVO;
-import com.samoy.fabiaoqing.viewobject.EmoticonVO;
-import com.samoy.fabiaoqing.viewobject.PackageVO;
-import com.samoy.fabiaoqing.viewobject.TagVO;
+import com.samoy.fabiaoqing.viewobject.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -144,5 +141,17 @@ public class MyBeanUtils {
         userDTO.setObjectId(CommonUtils.randomObjectId());
         BeanUtils.copyProperties(userDTO, userDO);
         return userDO;
+    }
+
+    public static UserDTO convertUserDOToDTO(UserDO userDO) {
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(userDO, userDTO);
+        return userDTO;
+    }
+
+    public static UserVO convertUserDTOToVO(UserDTO userDTO) {
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userDTO, userVO);
+        return userVO;
     }
 }

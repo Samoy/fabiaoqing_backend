@@ -37,9 +37,13 @@ public enum ResponseEnum {
      */
     PARAM_ILLEGAL(10005, "参数不合法"),
     /**
-     * 不支持的请求格式异常
+     * 不支持的请求格式
      */
-    UNSUPPORTED_HTTP_TYPE(1006, "不支持的请求类型"),
+    UNSUPPORTED_HTTP_TYPE(10006, "不支持的请求类型"),
+    /**
+     * 不支持的请求方法
+     */
+    UNSUPPORTED_HTTP_REQUEST(10007, "不支持的请求方法"),
     /**
      * 查询类别列表为空的错误信息
      */
@@ -76,6 +80,22 @@ public enum ResponseEnum {
      * 注册失败
      */
     REGISTER_FAILURE(60001, "注册失败"),
+    /**
+     * 用户不存在
+     */
+    USER_NOT_FOUND(60002, "用户不存在"),
+    /**
+     * 密码不匹配
+     */
+    PASSWORD_MISMATCH(60003, "密码错误"),
+    /**
+     * 缺失token
+     */
+    TOKEN_MISSING(60004, "token缺失"),
+    /**
+     * 登录过期
+     */
+    LOGIN_EXPIRED(60005, "登录已过期"),
     ;
     @Getter
     private Integer code;

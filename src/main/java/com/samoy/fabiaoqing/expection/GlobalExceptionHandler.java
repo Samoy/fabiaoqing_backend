@@ -9,6 +9,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -59,8 +60,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ApiResult mediaException(HttpServletRequest request, HttpMediaTypeNotSupportedException exception) {
-        log.error("请求异常:{},请求是:{}", exception.getMessage(), request);
+        log.error("请求类型异常:{},请求是:{}", exception.getMessage(), request);
         return ApiResult.failure(ResponseEnum.UNSUPPORTED_HTTP_TYPE);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ApiResult httpRequestMethodNotSupportedException(HttpServletRequest request, HttpRequestMethodNotSupportedException exception) {
+        log.error("请求方法异常:{},请求是:{}", exception.getMessage(), request);
+        return ApiResult.failure(ResponseEnum.UNSUPPORTED_HTTP_REQUEST);
     }
 
     /**

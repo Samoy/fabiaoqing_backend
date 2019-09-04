@@ -6,6 +6,8 @@ import lombok.extern.log4j.Log4j2;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -60,13 +63,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ApiResult mediaException(HttpServletRequest request, HttpMediaTypeNotSupportedException exception) {
-        log.error("请求类型异常:{},请求是:{}", exception.getMessage(), request);
+        log.error("请求类型异常:{},请求是:{}", exception.getMessage(), request.getRequestURI());
         return ApiResult.failure(ResponseEnum.UNSUPPORTED_HTTP_TYPE);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ApiResult httpRequestMethodNotSupportedException(HttpServletRequest request, HttpRequestMethodNotSupportedException exception) {
-        log.error("请求方法异常:{},请求是:{}", exception.getMessage(), request);
+        log.error("请求方法异常:{},请求是:{}", exception.getMessage(), request.getRequestURI());
         return ApiResult.failure(ResponseEnum.UNSUPPORTED_HTTP_REQUEST);
     }
 
@@ -77,12 +80,18 @@ public class GlobalExceptionHandler {
      * @param exception 参数不合法异常
      * @return json
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResult methodArgumentsHandler(HttpServletRequest request, MethodArgumentNotValidException exception) {
-        BindingResult bindingResult = exception.getBindingResult();
-        List<FieldError> errors = bindingResult.getFieldErrors();
+    @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
+    public ApiResult methodArgumentsHandler(HttpServletRequest request, Exception exception) {
+        BindingResult bindingResult = null;
+        if (exception instanceof MethodArgumentNotValidException){
+             bindingResult= ((MethodArgumentNotValidException)exception).getBindingResult();
+        }
+        if (exception instanceof BindException) {
+            bindingResult= ((BindException)exception).getBindingResult();
+        }
+        List<FieldError> errors = Objects.requireNonNull(bindingResult).getFieldErrors();
         String messages = errors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(","));
-        log.error("参数不合法:{},请求是:{}", messages, request);
+        log.error("参数不合法:{},请求是:{}", messages, request.getRequestURI());
         return ApiResult.failure(ResponseEnum.PARAM_ILLEGAL.getCode(), messages);
     }
 
@@ -114,7 +123,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ApiResult commonException(HttpServletRequest request, Exception exception) {
-        log.error("未知异常:{},请求是:{}", exception.getMessage(), request);
+        log.error("未知异常:{},请求是:{}", exception.getMessage(), request.getRequestURI());
         return ApiResult.failure(ResponseEnum.UNKNOWN_ERROR);
     }
 }

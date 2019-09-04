@@ -28,7 +28,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/register")
-    public ApiResult register(@Validated @RequestBody UserDTO userDTO) throws BusinessException {
+    public ApiResult register(@Validated @ModelAttribute UserDTO userDTO) throws BusinessException {
         TokenVO token = userService.register(userDTO);
         return token != null ? ApiResult.success(token) : ApiResult.failure(ResponseEnum.REGISTER_FAILURE);
     }

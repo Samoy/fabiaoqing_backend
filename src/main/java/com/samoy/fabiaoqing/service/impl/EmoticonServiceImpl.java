@@ -26,9 +26,10 @@ import java.util.stream.Collectors;
 public class EmoticonServiceImpl implements EmoticonService {
 
     /**
-     * Redis键的前缀，为了区分不同的DO
+     * Redis键的前缀，为了区分不同的DO,
+     * clearable表示该键可被清除
      */
-    private static final String REDIS_PREFIX = "emoticon_";
+    private static final String REDIS_PREFIX = "clearable_emoticon_";
 
     @Resource
     private EmoticonDAO emoticonDAO;

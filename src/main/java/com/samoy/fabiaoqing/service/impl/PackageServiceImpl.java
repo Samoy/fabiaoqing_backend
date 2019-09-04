@@ -32,9 +32,10 @@ import java.util.stream.Collectors;
 public class PackageServiceImpl implements PackageService {
 
     /**
-     * Redis键的前缀，为了区分不同的DO
+     * Redis键的前缀，为了区分不同的DO,
+     * clearable表示该缓存可清除
      */
-    private static final String REDIS_PREFIX = "package_";
+    private static final String REDIS_PREFIX = "clearable_package_";
 
     @Resource
     private PackageDAO packageDAO;

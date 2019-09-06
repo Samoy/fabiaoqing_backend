@@ -28,9 +28,11 @@ public class ScheduledTasks {
     /**
      * 定时删除所有可清空的Redis缓存，每天凌晨三点执行
      */
-    @Scheduled(cron = "0 3 * * *")
+    @Scheduled(cron = "0 0 3 * * ?")
     public void deleteClearableKeys() {
+        log.warn("开始清空redis缓存:{}", redisTemplate.keys(CLEARABLE_KEY));
         Set<String> clearableKeys = redisTemplate.keys(CLEARABLE_KEY);
         redisTemplate.delete(clearableKeys);
+        log.warn("已清空redis缓存:{}", redisTemplate.keys(CLEARABLE_KEY));
     }
 }

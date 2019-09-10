@@ -171,4 +171,8 @@
         `description` = #{description,jdbcType=VARCHAR}
         where `object_id` = #{objectId,jdbcType=VARCHAR}
     </update>
+    <update id="updateAvatar" parameterType="java.lang.String">
+        update t_user set `avatar` = #{avatar,jdbcType=VARCHAR}
+        where `object_id` = #{objectId,jdbcType=VARCHAR}
+    </update>
 </mapper>

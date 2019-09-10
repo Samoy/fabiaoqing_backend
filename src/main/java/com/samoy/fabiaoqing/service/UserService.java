@@ -3,6 +3,9 @@ package com.samoy.fabiaoqing.service;
 import com.samoy.fabiaoqing.dto.UserDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.viewobject.TokenVO;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * RegisterService
@@ -47,6 +50,17 @@ public interface UserService {
      * @throws BusinessException 业务异常
      */
     UserDTO findUserById(String userId) throws BusinessException;
+
+    /**
+     * 上传用户头像
+     *
+     * @param file     文件
+     * @param objectId 用户id
+     * @return 头像url
+     * @throws BusinessException 业务异常
+     * @throws IOException       IO异常
+     */
+    String uploadAvatar(String objectId, MultipartFile file) throws BusinessException, IOException;
 
     /**
      * 退出登录

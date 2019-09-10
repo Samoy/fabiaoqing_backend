@@ -45,6 +45,14 @@ public enum ResponseEnum {
      */
     UNSUPPORTED_HTTP_REQUEST(10007, "不支持的请求方法"),
     /**
+     *上传文件不是图片的异常信息
+     */
+    NOT_IMAGE(10008, "您上传的文件不是图片"),
+    /**
+     * 文件上传失败异常信息
+     */
+    FILE_UPLOAD_FAILURE(10009, "文件上传失败"),
+    /**
      * 查询类别列表为空的错误信息
      */
     CATEGORY_NOT_FOUNT(20000, "未查询到任何类别"),

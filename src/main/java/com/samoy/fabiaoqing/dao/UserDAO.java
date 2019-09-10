@@ -52,4 +52,13 @@ public interface UserDAO {
     int updateByPrimaryKey(UserDO record);
 
     UserDO selectByTelephone(String telephone);
+
+    /**
+     * 更新用户头像url
+     *
+     * @param objectId 用户id
+     * @param avatar   头像url
+     * @return 是否更新成功
+     */
+    int updateAvatar(String objectId, String avatar);
 }

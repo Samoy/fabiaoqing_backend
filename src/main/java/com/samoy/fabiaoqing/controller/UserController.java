@@ -11,8 +11,10 @@ import com.samoy.fabiaoqing.viewobject.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * UserController
@@ -43,6 +45,13 @@ public class UserController {
     public ApiResult profile(@RequestParam String userId) throws BusinessException {
         UserVO userVO = MyBeanUtils.convertUserDTOToVO(userService.findUserById(userId));
         return ApiResult.success(userVO);
+    }
+
+    @PostMapping("/upload_avatar")
+    public ApiResult uploadAvatar(@RequestParam String userId,
+                                  @RequestParam MultipartFile avatar) throws IOException, BusinessException {
+        String url = userService.uploadAvatar(userId, avatar);
+        return ApiResult.success("上传成功", url);
     }
 
     @PostMapping("/logout")

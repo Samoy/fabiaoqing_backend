@@ -1,6 +1,7 @@
 package com.samoy.fabiaoqing.response;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * Api返回公共类

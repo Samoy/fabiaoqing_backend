@@ -8,12 +8,17 @@ import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.UserService;
 import com.samoy.fabiaoqing.util.CommonUtils;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
+import com.samoy.fabiaoqing.util.OssUtils;
 import com.samoy.fabiaoqing.viewobject.TokenVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +41,8 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private OssUtils ossUtils;
 
     @Override
     public TokenVO register(UserDTO userDTO) throws BusinessException {
@@ -76,6 +83,23 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ResponseEnum.USER_NOT_FOUND);
         }
         return MyBeanUtils.convertUserDOToDTO(userDO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String uploadAvatar(String objectId, MultipartFile file) throws BusinessException, IOException {
+        if (!CommonUtils.isImage(file.getInputStream())) {
+            throw new BusinessException(ResponseEnum.NOT_IMAGE);
+        }
+        String fileUrl = ossUtils.uploadAvatar(file);
+        if (StringUtils.isEmpty(fileUrl)) {
+            throw new BusinessException(ResponseEnum.FILE_UPLOAD_FAILURE);
+        }
+        int result = userDAO.updateAvatar(objectId, fileUrl);
+        if (result != 1) {
+            throw new BusinessException(ResponseEnum.FILE_UPLOAD_FAILURE);
+        }
+        return fileUrl;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class WebSecurityInterceptor implements HandlerInterceptor {
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws BusinessException {
         String token = request.getHeader(TOKEN_KEY);
         if (token == null) {
             //缺失token

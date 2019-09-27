@@ -36,7 +36,7 @@ public class RedisConfig {
         jackson2JsonRedisSerializer.setObjectMapper(om);
         //key直接采用String的序列化
         template.setKeySerializer(new StringRedisSerializer());
-        //key直接采用jackson2JsonRedisSerializer序列化
+        //value直接采用jackson2JsonRedisSerializer序列化
         template.setValueSerializer(jackson2JsonRedisSerializer);
         template.afterPropertiesSet();
         return template;

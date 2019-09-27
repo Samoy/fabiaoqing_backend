@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * ExceptionAspect
  *
@@ -26,9 +28,9 @@ public class ExceptionAspect {
 
     @Around(value = "exceptionAspect()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        RequestFacade requestFacade = (RequestFacade) joinPoint.getArgs()[0];
+        HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
         Exception exception = (Exception) joinPoint.getArgs()[1];
-        log.error("在请求:{}时发生了异常:{}", requestFacade.getRequestURI(), exception.getLocalizedMessage());
+        log.error("在请求:{}时发生了异常:{}", request.getRequestURI(), exception.getLocalizedMessage());
         return joinPoint.proceed();
     }
 }

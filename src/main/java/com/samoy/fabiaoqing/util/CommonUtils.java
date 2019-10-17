@@ -7,6 +7,7 @@ import java.awt.*;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * CommonUtil
@@ -35,6 +36,15 @@ public class CommonUtils {
         ByteBuffer byteBuffer = ByteBuffer.allocate(16);
         byteBuffer.putLong(0, System.currentTimeMillis());
         return DigestUtils.md5DigestAsHex(byteBuffer.array());
+    }
+
+    /**
+     * 判断字符串是否是纯数字
+     * @param source 待检测的字符串
+     * @return 是否是纯数字
+     */
+    public static Boolean isNumericString(String source) {
+        return Pattern.matches("^(\\d)+$",source);
     }
 
     /**

@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -39,12 +40,26 @@ public class CommonUtils {
     }
 
     /**
+     * 随机生成用户名
+     *
+     * @return 用户名后缀
+     */
+    public static String randomUserId() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            sb.append(new Random().nextInt(10));
+        }
+        return sb.toString();
+    }
+
+    /**
      * 判断字符串是否是纯数字
+     *
      * @param source 待检测的字符串
      * @return 是否是纯数字
      */
     public static Boolean isNumericString(String source) {
-        return Pattern.matches("^(\\d)+$",source);
+        return Pattern.matches("^(\\d)+$", source);
     }
 
     /**

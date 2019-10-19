@@ -33,6 +33,26 @@ public interface UserService {
      */
     TokenVO login(String telephone, String password) throws BusinessException;
 
+
+    /**
+     * 通过验证码登录，若用户不存在会直接创建一个新用户
+     *
+     * @param telephone 手机号码
+     * @param code      验证码
+     * @return Token
+     * @throws BusinessException 业务异常
+     */
+    TokenVO loginByCode(String telephone, String code) throws BusinessException;
+
+    /**
+     * 发送短信验证码
+     *
+     * @param telephone 手机号
+     * @return 验证码
+     * @throws BusinessException 业务异常
+     */
+    String sendSmsCode(String telephone) throws BusinessException;
+
     /**
      * 通过手机号找到用户
      *

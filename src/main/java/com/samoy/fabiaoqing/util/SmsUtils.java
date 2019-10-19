@@ -2,7 +2,6 @@ package com.samoy.fabiaoqing.util;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +21,6 @@ import java.util.Objects;
  * @date 2019/10/17
  */
 @Component
-@Slf4j
 public class SmsUtils {
     @Value("${bmob.requestSmsUrl}")
     private String requestSmsUrl;
@@ -45,14 +43,10 @@ public class SmsUtils {
      * @return 短信验证码id或者错误信息，如是数字，则为短信id，如非数字，则为错误信息
      */
     public String sendSms(String telephone) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Bmob-Application-Id", applicationId);
-        headers.set("X-Bmob-REST-API-Key", restApiKey);
-        headers.set("Content-Type", "application/json");
         SmsRequest smsRequest = new SmsRequest();
         smsRequest.setTemplate(smsTemplate);
         smsRequest.setMobilePhoneNumber(telephone);
-        HttpEntity<SmsRequest> requestHttpEntity = new HttpEntity<>(smsRequest, headers);
+        HttpEntity<SmsRequest> requestHttpEntity = new HttpEntity<>(smsRequest, genSmsHeaders());
         try {
             ResponseEntity<SmsResponse> responseEntity = restTemplate.postForEntity(requestSmsUrl, requestHttpEntity, SmsResponse.class);
             return Objects.requireNonNull(responseEntity.getBody()).getSmsId();
@@ -64,6 +58,38 @@ public class SmsUtils {
             }
             return exception.getLocalizedMessage();
         }
+    }
+
+    /**
+     * 验证码是否合法
+     *
+     * @param telephone 手机号
+     * @param code      验证码
+     * @return 是否合法，若为"ok"则合法
+     */
+    public String verifySms(String telephone, String code) {
+        SmsRequest smsRequest = new SmsRequest();
+        smsRequest.setMobilePhoneNumber(telephone);
+        HttpEntity<SmsRequest> requestHttpEntity = new HttpEntity<>(smsRequest, genSmsHeaders());
+        try {
+            ResponseEntity<SmsResponse> responseEntity = restTemplate.postForEntity(verifySmsUrl + "/" + code, requestHttpEntity, SmsResponse.class);
+            return Objects.requireNonNull(responseEntity.getBody()).getMsg();
+        } catch (RestClientException exception) {
+            if (exception instanceof HttpClientErrorException) {
+                String responseStr = ((HttpClientErrorException) exception).getResponseBodyAsString();
+                SmsResponse response = JSONObject.parseObject(responseStr, SmsResponse.class);
+                return response.getError();
+            }
+            return exception.getLocalizedMessage();
+        }
+    }
+
+    private HttpHeaders genSmsHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Bmob-Application-Id", applicationId);
+        headers.set("X-Bmob-REST-API-Key", restApiKey);
+        headers.set("Content-Type", "application/json");
+        return headers;
     }
 }
 
@@ -77,5 +103,6 @@ class SmsRequest {
 class SmsResponse {
     private String smsId;
     private Integer code;
+    private String msg;
     private String error;
 }

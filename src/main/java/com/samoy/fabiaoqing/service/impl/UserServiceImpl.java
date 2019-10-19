@@ -9,6 +9,7 @@ import com.samoy.fabiaoqing.service.UserService;
 import com.samoy.fabiaoqing.util.CommonUtils;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
 import com.samoy.fabiaoqing.util.OssUtils;
+import com.samoy.fabiaoqing.util.SmsUtils;
 import com.samoy.fabiaoqing.viewobject.TokenVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -32,6 +33,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
+    private static final String SMS_OK = "ok";
+
     /**
      * token 30天过期
      */
@@ -43,6 +46,8 @@ public class UserServiceImpl implements UserService {
     private StringRedisTemplate stringRedisTemplate;
     @Resource
     private OssUtils ossUtils;
+    @Resource
+    private SmsUtils smsUtils;
 
     @Override
     public TokenVO register(UserDTO userDTO) throws BusinessException {
@@ -55,6 +60,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TokenVO login(String telephone, String password) throws BusinessException {
+        if (StringUtils.isEmpty(telephone)) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_EMPTY);
+        }
+        if (StringUtils.isEmpty(password)) {
+            throw new BusinessException(ResponseEnum.PASSWORD_EMPTY);
+        }
         UserDTO userDTO = findUserByTelephone(telephone);
         if (!Objects.equals(password, userDTO.getPassword())) {
             throw new BusinessException(ResponseEnum.PASSWORD_MISMATCH);
@@ -65,6 +76,44 @@ public class UserServiceImpl implements UserService {
             stringRedisTemplate.delete(lastToken);
         }
         return genToken(userDTO.getObjectId());
+    }
+
+    @Override
+    public TokenVO loginByCode(String telephone, String code) throws BusinessException {
+        if (StringUtils.isEmpty(telephone)) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_EMPTY);
+        }
+        if (StringUtils.isEmpty(code)) {
+            throw new BusinessException(ResponseEnum.VERIFY_CODE_EMPTY);
+        }
+        String smsResult = smsUtils.verifySms(telephone, code).toLowerCase();
+        if (SMS_OK.equals(smsResult)) {
+            UserDO userDO = userDAO.selectByTelephone(telephone);
+            //若该用户不存在，则直接创建一个新用户
+            if (userDO == null) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setTelephone(telephone);
+                userDTO.setPassword("");
+                userDTO.setNickname("发表情用户" + CommonUtils.randomUserId());
+                return register(userDTO);
+            }
+            return genToken(userDO.getObjectId());
+        } else {
+            throw new BusinessException(ResponseEnum.SMS_VERIFY_FAILURE.getCode(), smsResult);
+        }
+    }
+
+    @Override
+    public String sendSmsCode(String telephone) throws BusinessException {
+        if (StringUtils.isEmpty(telephone)) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_EMPTY);
+        }
+        String smsResult = smsUtils.sendSms(telephone);
+        if (CommonUtils.isNumericString(smsResult)) {
+            return smsResult;
+        } else {
+            throw new BusinessException(ResponseEnum.SMS_SEND_FAILURE.getCode(), smsResult);
+        }
     }
 
     @Override

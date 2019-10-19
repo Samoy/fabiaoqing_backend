@@ -38,7 +38,19 @@ public class UserController {
     @PostMapping("/login")
     public ApiResult login(@RequestParam String telephone, @RequestParam String password) throws BusinessException {
         TokenVO token = userService.login(telephone, password);
-        return ApiResult.success(token);
+        return token == null ? ApiResult.failure(ResponseEnum.LOGIN_FAILURE) : ApiResult.success(token);
+    }
+
+    @PostMapping("/login_by_code")
+    public ApiResult loginByCode(@RequestParam String telephone, @RequestParam String code) throws BusinessException {
+        TokenVO token = userService.loginByCode(telephone, code);
+        return token == null ? ApiResult.failure(ResponseEnum.LOGIN_FAILURE) : ApiResult.success(token);
+    }
+
+    @PostMapping("/send_code")
+    public ApiResult sendSmsCode(@RequestParam String telephone) throws BusinessException {
+        String sms = userService.sendSmsCode(telephone);
+        return ApiResult.success(sms);
     }
 
     @GetMapping("/profile")

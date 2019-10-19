@@ -45,7 +45,7 @@ public enum ResponseEnum {
      */
     UNSUPPORTED_HTTP_REQUEST(10007, "不支持的请求方法"),
     /**
-     *上传文件不是图片的异常信息
+     * 上传文件不是图片的异常信息
      */
     NOT_IMAGE(10008, "您上传的文件不是图片"),
     /**
@@ -104,6 +104,30 @@ public enum ResponseEnum {
      * 登录过期
      */
     LOGIN_EXPIRED(60005, "登录已过期"),
+    /**
+     * 手机号为空
+     */
+    TELEPHONE_EMPTY(60006, "手机号不能为空"),
+    /**
+     * 密码为空
+     */
+    PASSWORD_EMPTY(60007, "密码不能为空"),
+    /**
+     * 登录失败
+     */
+    LOGIN_FAILURE(60008, "登录失败"),
+    /**
+     * 验证码为空
+     */
+    VERIFY_CODE_EMPTY(60009, "验证码为空"),
+    /**
+     * 短信发送失败
+     */
+    SMS_SEND_FAILURE(70000, "短信发送失败"),
+    /**
+     * 短息验证失败
+     */
+    SMS_VERIFY_FAILURE(70001, "短信验证失败"),
     ;
     @Getter
     private Integer code;

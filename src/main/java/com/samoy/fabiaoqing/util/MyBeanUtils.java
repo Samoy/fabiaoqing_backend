@@ -143,12 +143,24 @@ public class MyBeanUtils {
         return userDO;
     }
 
+    /**
+     * 用户DO转DTO
+     *
+     * @param userDO userDTO
+     * @return UserDTO
+     */
     public static UserDTO convertUserDOToDTO(UserDO userDO) {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(userDO, userDTO);
         return userDTO;
     }
 
+    /**
+     * 用户DTO转VO
+     *
+     * @param userDTO userDTO
+     * @return UserVO
+     */
     public static UserVO convertUserDTOToVO(UserDTO userDTO) {
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userDTO, userVO);

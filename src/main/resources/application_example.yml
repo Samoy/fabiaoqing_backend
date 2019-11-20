@@ -6,21 +6,28 @@ spring:
     username: 你的数据库用户名
     password: 你的数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      max-lifetime: 0
+    dbcp2:
+      max-idle: 0
+    redis:
+      password: 你的redis密码
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 ---
 spring:
   profiles: prod
   datasource:
-    url: jdbc:mysql://localhost:3306/fabiaoqing?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+    url: jdbc:mysql://localhost:3306/fabiaoqing?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8&useSSL=false
 server:
   port: 443
 ---
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://你的数据库主机:3306/fabiaoqing?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+    url: jdbc:mysql://你的数据库主机:3306/fabiaoqing?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8&useSSL=false
   redis:
     host: 你的redis主机
+    timeout: 5000
 server:
   port: 8080

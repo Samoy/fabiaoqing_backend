@@ -53,5 +53,11 @@
                delimitAllColumns="true"
                mapperName="UserDAO">
         </table>
+        <table tableName="t_favorite" domainObjectName="FavoriteDO" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"
+               delimitAllColumns="true"
+               mapperName="FavoriteDAO">
+        </table>
     </context>
 </generatorConfiguration>

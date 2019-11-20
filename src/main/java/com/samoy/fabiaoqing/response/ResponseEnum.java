@@ -128,6 +128,14 @@ public enum ResponseEnum {
      * 短息验证失败
      */
     SMS_VERIFY_FAILURE(70001, "短信验证失败"),
+    /**
+     * 收藏失败
+     */
+    FAVORITE_ADD_FAILURE(80000, "收藏失败"),
+    /**
+     * 删除收藏失败
+     */
+    FAVORITE_DELETE_FAILURE(80001, "删除收藏失败"),
     ;
     @Getter
     private Integer code;

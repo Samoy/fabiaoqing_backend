@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -78,27 +79,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
     public ApiResult methodArgumentsHandler(HttpServletRequest request, Exception exception) {
         BindingResult bindingResult = null;
-        if (exception instanceof MethodArgumentNotValidException){
-             bindingResult= ((MethodArgumentNotValidException)exception).getBindingResult();
+        if (exception instanceof MethodArgumentNotValidException) {
+            bindingResult = ((MethodArgumentNotValidException) exception).getBindingResult();
         }
         if (exception instanceof BindException) {
-            bindingResult= ((BindException)exception).getBindingResult();
+            bindingResult = ((BindException) exception).getBindingResult();
         }
         List<FieldError> errors = Objects.requireNonNull(bindingResult).getFieldErrors();
         String messages = errors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(","));
         return ApiResult.failure(ResponseEnum.PARAM_ILLEGAL.getCode(), messages);
-    }
-
-    /**
-     * 运行时异常处理
-     *
-     * @param request   请求
-     * @param exception 运行时异常
-     * @return json
-     */
-    @ExceptionHandler(RuntimeException.class)
-    public ApiResult runtimeException(HttpServletRequest request, RuntimeException exception) {
-        return ApiResult.failure(ResponseEnum.INTERNAL_ERROR);
     }
 
     /**
@@ -111,6 +100,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MyBatisSystemException.class)
     public ApiResult dbExceptionHandler(HttpServletRequest request, MyBatisSystemException exception) {
         return ApiResult.failure(ResponseEnum.MYSQL_ERROR.getCode(), "服务器错误,请稍后再试");
+    }
+
+    /**
+     * 运行时异常处理
+     *
+     * @param request   请求
+     * @param exception 运行时异常
+     * @return json
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public ApiResult runtimeException(HttpServletRequest request, RuntimeException exception) {
+        return ApiResult.failure(ResponseEnum.INTERNAL_ERROR);
     }
 
     @ExceptionHandler(Exception.class)

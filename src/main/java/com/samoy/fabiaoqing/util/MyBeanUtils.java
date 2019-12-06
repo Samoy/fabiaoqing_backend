@@ -138,7 +138,6 @@ public class MyBeanUtils {
      */
     public static UserDO convertUserDTOToDO(UserDTO userDTO) {
         UserDO userDO = new UserDO();
-        userDTO.setObjectId(CommonUtils.randomObjectId());
         BeanUtils.copyProperties(userDTO, userDO);
         return userDO;
     }
@@ -165,5 +164,11 @@ public class MyBeanUtils {
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(userDTO, userVO);
         return userVO;
+    }
+
+    public static FeedbackDO convertFeedbackDTOToDO(FeedbackDTO feedbackDTO) {
+        FeedbackDO feedbackDO = new FeedbackDO();
+        BeanUtils.copyProperties(feedbackDTO, feedbackDO);
+        return feedbackDO;
     }
 }

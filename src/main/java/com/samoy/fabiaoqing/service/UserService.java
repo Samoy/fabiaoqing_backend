@@ -3,6 +3,7 @@ package com.samoy.fabiaoqing.service;
 import com.samoy.fabiaoqing.dto.UserDTO;
 import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.viewobject.TokenVO;
+import com.samoy.fabiaoqing.viewobject.UserVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -81,6 +82,20 @@ public interface UserService {
      * @throws IOException       IO异常
      */
     String uploadAvatar(String objectId, MultipartFile file) throws BusinessException, IOException;
+
+    /**
+     * 修改个人资料
+     *
+     * @param userId      用户id
+     * @param avatar      头像
+     * @param nickname    昵称
+     * @param sex         性别,1为男，0为女
+     * @param description 介绍
+     * @return UserDTO
+     * @throws BusinessException 业务异常
+     * @throws IOException       IO异常
+     */
+    UserDTO changeProfile(String userId, MultipartFile avatar, String nickname, String sex, String description) throws BusinessException, IOException;
 
     /**
      * 退出登录

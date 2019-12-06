@@ -11,6 +11,7 @@ import com.samoy.fabiaoqing.util.MyBeanUtils;
 import com.samoy.fabiaoqing.util.OssUtils;
 import com.samoy.fabiaoqing.util.SmsUtils;
 import com.samoy.fabiaoqing.viewobject.TokenVO;
+import com.samoy.fabiaoqing.viewobject.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,9 @@ public class UserServiceImpl implements UserService {
         if (userDAO.selectByTelephone(userDTO.getTelephone()) != null) {
             throw new BusinessException(ResponseEnum.TELEPHONE_EXISTS);
         }
-        int result = userDAO.insertSelective(MyBeanUtils.convertUserDTOToDO(userDTO));
+        UserDO userDO = MyBeanUtils.convertUserDTOToDO(userDTO);
+        userDO.setObjectId(CommonUtils.randomObjectId());
+        int result = userDAO.insertSelective(userDO);
         return result == 1 ? genToken(userDTO.getObjectId()) : null;
     }
 
@@ -149,6 +152,32 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ResponseEnum.FILE_UPLOAD_FAILURE);
         }
         return fileUrl;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserDTO changeProfile(String userId, MultipartFile avatar, String nickname, String sex, String description) throws BusinessException, IOException {
+        UserDO userDO = userDAO.selectByPrimaryKey(userId);
+        if (userDO == null) {
+            throw new BusinessException(ResponseEnum.USER_NOT_FOUND);
+        }
+        UserDTO userDTO = MyBeanUtils.convertUserDOToDTO(userDO);
+        if (avatar != null) {
+            String avatarUrl = uploadAvatar(userId, avatar);
+            userDTO.setAvatar(avatarUrl);
+        }
+        if (!StringUtils.isEmpty(nickname)) {
+            userDTO.setNickname(nickname);
+        }
+        if (!StringUtils.isEmpty(sex)) {
+            userDTO.setSex(Objects.equals(sex, "1"));
+        }
+        if (!StringUtils.isEmpty(description)) {
+            userDTO.setDescription(description);
+        }
+        UserDO newDO = MyBeanUtils.convertUserDTOToDO(userDTO);
+        int result = userDAO.updateByPrimaryKeySelective(newDO);
+        return result == 1 ? userDTO : null;
     }
 
     @Override

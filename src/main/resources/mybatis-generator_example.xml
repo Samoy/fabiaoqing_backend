@@ -59,5 +59,11 @@
                delimitAllColumns="true"
                mapperName="FavoriteDAO">
         </table>
+        <table tableName="t_feedback" domainObjectName="FeedbackDO" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"
+               delimitAllColumns="true"
+               mapperName="FeedbackDAO">
+        </table>
     </context>
 </generatorConfiguration>

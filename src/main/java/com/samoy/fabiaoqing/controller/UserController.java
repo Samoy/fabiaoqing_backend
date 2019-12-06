@@ -59,11 +59,18 @@ public class UserController {
         return ApiResult.success(userVO);
     }
 
-    @PostMapping("/upload_avatar")
-    public ApiResult uploadAvatar(@RequestParam String userId,
-                                  @RequestParam MultipartFile avatar) throws IOException, BusinessException {
-        String url = userService.uploadAvatar(userId, avatar);
-        return ApiResult.success("上传成功", url);
+    @PostMapping("/change_profile")
+    public ApiResult changeProfile(@RequestParam String userId,
+                                   @RequestParam(required = false) MultipartFile avatar,
+                                   @RequestParam(required = false) String nickname,
+                                   @RequestParam(required = false) String sex,
+                                   @RequestParam(required = false) String description) throws IOException, BusinessException {
+        UserDTO userDTO = userService.changeProfile(userId, avatar, nickname, sex, description);
+        if (userDTO == null) {
+            return ApiResult.failure(ResponseEnum.CHANGE_PROFILE_FAILURE);
+        }
+        UserVO userVO = MyBeanUtils.convertUserDTOToVO(userDTO);
+        return ApiResult.success("修改资料成功", userVO);
     }
 
     @PostMapping("/logout")

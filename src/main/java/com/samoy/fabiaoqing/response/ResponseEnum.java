@@ -121,6 +121,10 @@ public enum ResponseEnum {
      */
     VERIFY_CODE_EMPTY(60009, "验证码为空"),
     /**
+     * 修改资料失败
+     */
+    CHANGE_PROFILE_FAILURE(60010, "修改资料失败"),
+    /**
      * 短信发送失败
      */
     SMS_SEND_FAILURE(70000, "短信发送失败"),

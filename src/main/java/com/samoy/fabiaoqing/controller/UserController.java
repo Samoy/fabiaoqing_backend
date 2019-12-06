@@ -59,7 +59,7 @@ public class UserController {
         return ApiResult.success(userVO);
     }
 
-    @PostMapping("/change_profile")
+    @PostMapping("/update_profile")
     public ApiResult changeProfile(@RequestParam String userId,
                                    @RequestParam(required = false) MultipartFile avatar,
                                    @RequestParam(required = false) String nickname,

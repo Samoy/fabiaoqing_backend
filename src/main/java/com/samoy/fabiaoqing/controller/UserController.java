@@ -5,6 +5,7 @@ import com.samoy.fabiaoqing.expection.BusinessException;
 import com.samoy.fabiaoqing.response.ApiResult;
 import com.samoy.fabiaoqing.response.ResponseEnum;
 import com.samoy.fabiaoqing.service.UserService;
+import com.samoy.fabiaoqing.util.CommonUtils;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
 import com.samoy.fabiaoqing.viewobject.TokenVO;
 import com.samoy.fabiaoqing.viewobject.UserVO;
@@ -60,17 +61,35 @@ public class UserController {
     }
 
     @PostMapping("/update_profile")
-    public ApiResult changeProfile(@RequestParam String userId,
+    public ApiResult updateProfile(@RequestParam String userId,
                                    @RequestParam(required = false) MultipartFile avatar,
                                    @RequestParam(required = false) String nickname,
                                    @RequestParam(required = false) String sex,
                                    @RequestParam(required = false) String description) throws IOException, BusinessException {
-        UserDTO userDTO = userService.changeProfile(userId, avatar, nickname, sex, description);
+        UserDTO userDTO = userService.updateProfile(userId, avatar, nickname, sex, description);
         if (userDTO == null) {
-            return ApiResult.failure(ResponseEnum.CHANGE_PROFILE_FAILURE);
+            return ApiResult.failure(ResponseEnum.UPDATE_PROFILE_FAILURE);
         }
         UserVO userVO = MyBeanUtils.convertUserDTOToVO(userDTO);
         return ApiResult.success("修改资料成功", userVO);
+    }
+
+    @GetMapping("/find_by_tel")
+    public ApiResult findUserByTel(@RequestParam String tel) throws BusinessException {
+        if (!CommonUtils.legalTelephone(tel)) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_ILLEGAL);
+        }
+        UserDTO userDTO = userService.findUserByTelephone(tel);
+        return userDTO == null ? ApiResult.success("该手机号可用", null) : ApiResult.failure(ResponseEnum.TELEPHONE_EXISTS.getCode(), "新手机号码已被注册");
+    }
+
+    @PostMapping("/update_tel")
+    public ApiResult updateTel(@RequestParam String userId,
+                               @RequestParam String oldTel,
+                               @RequestParam String newTel,
+                               @RequestParam String code) throws BusinessException {
+        Boolean success = userService.updateTel(userId, oldTel, newTel, code);
+        return success ? ApiResult.success("修改成功，以后您将用新手机号码登录", null) : ApiResult.failure(ResponseEnum.UPDATE_TEL_FAILURE);
     }
 
     @PostMapping("/logout")

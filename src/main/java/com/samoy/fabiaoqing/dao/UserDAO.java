@@ -61,4 +61,13 @@ public interface UserDAO {
      * @return 是否更新成功
      */
     int updateAvatar(String objectId, String avatar);
+
+    /**
+     * 通过用户id修改手机号码
+     *
+     * @param objectId  用户id
+     * @param telephone 新手机号码
+     * @return 影响行数
+     */
+    int updateTelByPrimaryKey(String objectId, String telephone);
 }

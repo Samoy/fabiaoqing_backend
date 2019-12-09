@@ -123,7 +123,19 @@ public enum ResponseEnum {
     /**
      * 修改资料失败
      */
-    CHANGE_PROFILE_FAILURE(60010, "修改资料失败"),
+    UPDATE_PROFILE_FAILURE(60010, "修改资料失败"),
+    /**
+     * 原手机号码不正确
+     */
+    TELEPHONE_NOT_CORRECT(60011, "原手机号码不正确"),
+    /**
+     * 原手机号码不正确
+     */
+    UPDATE_TEL_FAILURE(60012, "修改手机号码失败"),
+    /**
+     * 手机号码不合法
+     */
+    TELEPHONE_ILLEGAL(60013, "手机号码不合法"),
     /**
      * 短信发送失败
      */

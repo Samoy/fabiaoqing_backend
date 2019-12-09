@@ -80,4 +80,14 @@ public class CommonUtils {
             return false;
         }
     }
+
+    /**
+     * 判断是否是合法的手机号码
+     *
+     * @param telephone 待检测手机号码
+     * @return 是否合法
+     */
+    public static boolean legalTelephone(String telephone) {
+        return Pattern.matches("[1][3456789](\\d){9}", telephone);
+    }
 }

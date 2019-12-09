@@ -95,7 +95,19 @@ public interface UserService {
      * @throws BusinessException 业务异常
      * @throws IOException       IO异常
      */
-    UserDTO changeProfile(String userId, MultipartFile avatar, String nickname, String sex, String description) throws BusinessException, IOException;
+    UserDTO updateProfile(String userId, MultipartFile avatar, String nickname, String sex, String description) throws BusinessException, IOException;
+
+    /**
+     * 修改手机号
+     *
+     * @param userId 用户id
+     * @param oldTel 旧手机号码
+     * @param newTel 新手机号码
+     * @param code   新手机验证码
+     * @return 是否修改成功
+     * @throws BusinessException 业务异常
+     */
+    Boolean updateTel(String userId, String oldTel, String newTel, String code) throws BusinessException;
 
     /**
      * 退出登录

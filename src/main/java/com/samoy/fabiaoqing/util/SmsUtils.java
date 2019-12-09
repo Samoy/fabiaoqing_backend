@@ -70,6 +70,7 @@ public class SmsUtils {
     public String verifySms(String telephone, String code) {
         SmsRequest smsRequest = new SmsRequest();
         smsRequest.setMobilePhoneNumber(telephone);
+        smsRequest.setTemplate(smsTemplate);
         HttpEntity<SmsRequest> requestHttpEntity = new HttpEntity<>(smsRequest, genSmsHeaders());
         try {
             ResponseEntity<SmsResponse> responseEntity = restTemplate.postForEntity(verifySmsUrl + "/" + code, requestHttpEntity, SmsResponse.class);

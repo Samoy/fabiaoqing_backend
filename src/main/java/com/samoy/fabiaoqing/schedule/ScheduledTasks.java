@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,7 +33,7 @@ public class ScheduledTasks {
     public void deleteClearableKeys() {
         log.warn("开始清空redis缓存:{}", redisTemplate.keys(CLEARABLE_KEY));
         Set<String> clearableKeys = redisTemplate.keys(CLEARABLE_KEY);
-        redisTemplate.delete(clearableKeys);
+        redisTemplate.delete(Objects.requireNonNull(clearableKeys));
         log.warn("已清空redis缓存:{}", redisTemplate.keys(CLEARABLE_KEY));
     }
 }

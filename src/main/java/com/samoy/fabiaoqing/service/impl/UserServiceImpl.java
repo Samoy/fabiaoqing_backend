@@ -11,7 +11,6 @@ import com.samoy.fabiaoqing.util.MyBeanUtils;
 import com.samoy.fabiaoqing.util.OssUtils;
 import com.samoy.fabiaoqing.util.SmsUtils;
 import com.samoy.fabiaoqing.viewobject.TokenVO;
-import com.samoy.fabiaoqing.viewobject.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -70,6 +69,9 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ResponseEnum.PASSWORD_EMPTY);
         }
         UserDTO userDTO = findUserByTelephone(telephone);
+        if (userDTO == null) {
+            throw new BusinessException(ResponseEnum.USER_NOT_FOUND);
+        }
         if (!Objects.equals(password, userDTO.getPassword())) {
             throw new BusinessException(ResponseEnum.PASSWORD_MISMATCH);
         }
@@ -95,6 +97,7 @@ public class UserServiceImpl implements UserService {
             //若该用户不存在，则直接创建一个新用户
             if (userDO == null) {
                 UserDTO userDTO = new UserDTO();
+                userDTO.setObjectId(CommonUtils.randomObjectId());
                 userDTO.setTelephone(telephone);
                 userDTO.setPassword("");
                 userDTO.setNickname("发表情用户" + CommonUtils.randomUserId());
@@ -120,12 +123,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findUserByTelephone(String telephone) throws BusinessException {
+    public UserDTO findUserByTelephone(String telephone) {
         UserDO userDO = userDAO.selectByTelephone(telephone);
-        if (userDO == null) {
-            throw new BusinessException(ResponseEnum.USER_NOT_FOUND);
-        }
-        return MyBeanUtils.convertUserDOToDTO(userDO);
+        return userDO == null ? null : MyBeanUtils.convertUserDOToDTO(userDO);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserDTO changeProfile(String userId, MultipartFile avatar, String nickname, String sex, String description) throws BusinessException, IOException {
+    public UserDTO updateProfile(String userId, MultipartFile avatar, String nickname, String sex, String description) throws BusinessException, IOException {
         UserDO userDO = userDAO.selectByPrimaryKey(userId);
         if (userDO == null) {
             throw new BusinessException(ResponseEnum.USER_NOT_FOUND);
@@ -178,6 +178,30 @@ public class UserServiceImpl implements UserService {
         UserDO newDO = MyBeanUtils.convertUserDTOToDO(userDTO);
         int result = userDAO.updateByPrimaryKeySelective(newDO);
         return result == 1 ? userDTO : null;
+    }
+
+    @Override
+    public Boolean updateTel(String userId, String oldTel, String newTel, String code) throws BusinessException {
+        if (!CommonUtils.legalTelephone(oldTel)) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_ILLEGAL.getCode(), "原手机号码不合法");
+        }
+        if (!CommonUtils.legalTelephone(newTel)) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_ILLEGAL.getCode(), "新手机号码不合法");
+        }
+        if (!Objects.equals(oldTel, userDAO.selectByPrimaryKey(userId).getTelephone())) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_NOT_CORRECT);
+        }
+        UserDO userDO = userDAO.selectByTelephone(newTel);
+        if (userDO != null) {
+            throw new BusinessException(ResponseEnum.TELEPHONE_EXISTS);
+        }
+        String smsResult = smsUtils.verifySms(newTel, code).toLowerCase();
+        if (SMS_OK.equals(smsResult)) {
+            int result = userDAO.updateTelByPrimaryKey(userId, newTel);
+            return result > 0;
+        } else {
+            throw new BusinessException(ResponseEnum.SMS_VERIFY_FAILURE.getCode(), smsResult);
+        }
     }
 
     @Override

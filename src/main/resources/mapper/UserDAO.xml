@@ -179,4 +179,8 @@
         update t_user set `telephone` = #{telephone,jdbcType=VARCHAR}
         where `object_id`= #{objectId,jdbcType=VARCHAR}
     </update>
+    <update id="updatePsdByPrimaryKey" parameterType="java.lang.String">
+        update t_user set `password` = #{password,jdbcType=VARCHAR}
+        where `object_id`= #{objectId,jdbcType=VARCHAR}
+    </update>
 </mapper>

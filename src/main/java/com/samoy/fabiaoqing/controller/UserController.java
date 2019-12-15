@@ -92,6 +92,18 @@ public class UserController {
         return success ? ApiResult.success("修改成功，以后您将用新手机号码登录", null) : ApiResult.failure(ResponseEnum.UPDATE_TEL_FAILURE);
     }
 
+    @GetMapping("/has_psd")
+    public ApiResult hasPsd(@RequestParam String userId) throws BusinessException {
+        Boolean hasPas = userService.hasPsd(userId);
+        return ApiResult.success(hasPas);
+    }
+
+    @PostMapping("/update_psd")
+    public ApiResult updatePsd(@RequestParam String userId, @RequestParam String oldPsd, @RequestParam String newPsd) throws BusinessException {
+        Boolean success = userService.updatePsd(userId, oldPsd, newPsd);
+        return success ? ApiResult.success("密码修改成功，以后您需要用新密码进行登录", null) : ApiResult.failure(ResponseEnum.PASSWORD_UPDATE_FAILURE);
+    }
+
     @PostMapping("/logout")
     public ApiResult logout(@RequestParam String userId) throws BusinessException {
         userService.logout(userId);

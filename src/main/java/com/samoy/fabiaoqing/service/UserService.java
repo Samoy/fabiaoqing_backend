@@ -110,6 +110,25 @@ public interface UserService {
     Boolean updateTel(String userId, String oldTel, String newTel, String code) throws BusinessException;
 
     /**
+     * 判断该用户是否设置了密码
+     *
+     * @param userId 用户id
+     * @return 是否有密码
+     */
+    Boolean hasPsd(String userId) throws BusinessException;
+
+    /**
+     * 修改密码
+     *
+     * @param userId 用户id
+     * @param oldPsd 旧密码
+     * @param newPsd 新密码
+     * @return 是否修改成功
+     * @throws BusinessException 业务异常
+     */
+    Boolean updatePsd(String userId, String oldPsd, String newPsd) throws BusinessException;
+
+    /**
      * 退出登录
      *
      * @param userId 用户id

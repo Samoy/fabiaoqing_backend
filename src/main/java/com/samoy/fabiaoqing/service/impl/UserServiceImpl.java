@@ -205,6 +205,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean hasPsd(String userId) throws BusinessException {
+        UserDTO userDTO = findUserById(userId);
+        return userDTO.getPassword() != null && !userDTO.getPassword().isEmpty();
+    }
+
+    @Override
+    public Boolean updatePsd(String userId, String oldPsd, String newPsd) throws BusinessException {
+        UserDTO userDTO = findUserById(userId);
+        if (!hasPsd(userId)) {
+            throw new BusinessException(ResponseEnum.PASSWORD_NOT_SET);
+        }
+        if (!Objects.equals(oldPsd, userDTO.getPassword())) {
+            throw new BusinessException(ResponseEnum.PASSWORD_INCORRECT);
+        }
+        int result = userDAO.updatePsdByPrimaryKey(userId, newPsd);
+        return result > 0;
+    }
+
+    @Override
     public void logout(String userId) throws BusinessException {
         UserDO userDO = userDAO.selectByPrimaryKey(userId);
         if (userDO == null) {

@@ -70,4 +70,13 @@ public interface UserDAO {
      * @return 影响行数
      */
     int updateTelByPrimaryKey(String objectId, String telephone);
+
+    /**
+     * 通过用户ID修改密码
+     *
+     * @param objectId 用户id
+     * @param password 新密码
+     * @return 影响行数
+     */
+    int updatePsdByPrimaryKey(String objectId, String password);
 }

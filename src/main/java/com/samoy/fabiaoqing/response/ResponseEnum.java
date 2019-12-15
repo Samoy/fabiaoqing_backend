@@ -137,6 +137,18 @@ public enum ResponseEnum {
      */
     TELEPHONE_ILLEGAL(60013, "手机号码不合法"),
     /**
+     *
+     */
+    PASSWORD_UPDATE_FAILURE(60014, "密码修改失败"),
+    /**
+     * 旧密码不正确
+     */
+    PASSWORD_INCORRECT(60015, "旧密码不正确"),
+    /**
+     * 用户还未设置密码
+     */
+    PASSWORD_NOT_SET(60016, "您还未设置密码"),
+    /**
      * 短信发送失败
      */
     SMS_SEND_FAILURE(70000, "短信发送失败"),

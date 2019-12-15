@@ -104,6 +104,12 @@ public class UserController {
         return success ? ApiResult.success("密码修改成功，以后您需要用新密码进行登录", null) : ApiResult.failure(ResponseEnum.PASSWORD_UPDATE_FAILURE);
     }
 
+    @PostMapping("/reset_psd")
+    public ApiResult resetPsd(@RequestParam String telephone, @RequestParam String code, @RequestParam String password) throws BusinessException {
+        Boolean success = userService.resetPsd(telephone, code, password);
+        return success ? ApiResult.success("初始化密码成功", null) : ApiResult.failure(ResponseEnum.PASSWORD_INIT_FAILURE);
+    }
+
     @PostMapping("/logout")
     public ApiResult logout(@RequestParam String userId) throws BusinessException {
         userService.logout(userId);

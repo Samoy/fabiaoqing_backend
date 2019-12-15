@@ -129,6 +129,17 @@ public interface UserService {
     Boolean updatePsd(String userId, String oldPsd, String newPsd) throws BusinessException;
 
     /**
+     * 重置密码
+     *
+     * @param telephone 手机号
+     * @param code      验证码
+     * @param password  密码
+     * @return
+     * @throws BusinessException
+     */
+    Boolean resetPsd(String telephone, String code, String password) throws BusinessException;
+
+    /**
      * 退出登录
      *
      * @param userId 用户id

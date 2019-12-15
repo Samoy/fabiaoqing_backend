@@ -79,4 +79,13 @@ public interface UserDAO {
      * @return 影响行数
      */
     int updatePsdByPrimaryKey(String objectId, String password);
+
+    /**
+     * 通过手机号码修改密码
+     *
+     * @param telephone 手机号
+     * @param password  密码
+     * @return 影响行数
+     */
+    int updatePsdByTelephone(String telephone, String password);
 }

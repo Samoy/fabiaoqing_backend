@@ -149,6 +149,10 @@ public enum ResponseEnum {
      */
     PASSWORD_NOT_SET(60016, "您还未设置密码"),
     /**
+     * 初始化密码失败
+     */
+    PASSWORD_INIT_FAILURE(60017, "初始化密码失败"),
+    /**
      * 短信发送失败
      */
     SMS_SEND_FAILURE(70000, "短信发送失败"),

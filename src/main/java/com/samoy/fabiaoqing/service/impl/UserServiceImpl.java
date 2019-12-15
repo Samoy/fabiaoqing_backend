@@ -224,6 +224,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean resetPsd(String telephone, String code, String password) throws BusinessException {
+        String smsResult = smsUtils.verifySms(telephone, code);
+        if (SMS_OK.equals(smsResult)) {
+            UserDTO userDTO = findUserByTelephone(telephone);
+            int result = userDAO.updatePsdByTelephone(userDTO.getTelephone(), password);
+            return result > 0;
+        } else {
+            throw new BusinessException(ResponseEnum.SMS_VERIFY_FAILURE.getCode(), smsResult);
+        }
+    }
+
+    @Override
     public void logout(String userId) throws BusinessException {
         UserDO userDO = userDAO.selectByPrimaryKey(userId);
         if (userDO == null) {

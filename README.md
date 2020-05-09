@@ -27,8 +27,5 @@ spring:
 2. 运行
 `java -jar xxxx.jar`或者后台运行`nohup java -jar xxx.jar &`
 
-## TODOList
-~~1. Redis与MySQL的数据一致性~~
-2. "我的"模块
-3. "制图"模块
-4. "标签"模块
+## API文档
+<https://documenter.getpostman.com/view/1150845/SWEE1Ete?version=latest>

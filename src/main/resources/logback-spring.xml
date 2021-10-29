@@ -1,45 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration  scan="true" scanPeriod="60 seconds" debug="false">
-    <contextName>fabiaoqing</contextName>
-    <property name="log.filePath" value="./logs" />
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<contextName>${application.name}</contextName>
+	<springProperty name="log.filePath" value="./logs"/>
+	<springProperty name="application.name" source="spring.application.name"/>
 
-    <!--输出到控制台-->
-    <springProfile name="dev">
-        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-            <!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-                 <level>ERROR</level>
-             </filter>-->
-            <encoder>
-                <!--<pattern>%magenta(%d{HH:mm:ss.SSS}) %contextName %black([%thread]) %highlight(%-5level) %logger{36} - %highlight(%msg%n)</pattern>-->
-                <pattern>%magenta(%d{HH:mm:ss.SSS}) %black([%thread]) %highlight(%-5level) %black(%logger{1000}) - %highlight(%msg%n)</pattern>
-            </encoder>
-        </appender>
-        <logger name="com.samoy.fabiaoqing" level="info" additivity="false">
-            <appender-ref ref="console"/>
-        </logger>
-        <root level="info">
-            <appender-ref ref="console" />
-        </root>
-    </springProfile>
+	<!--默认输出到控制台(开发环境)-->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%magenta(%d{HH:mm:ss.SSS}) %black([%thread]) %highlight(%-5level) %black(%logger{1000}) -
+				%highlight(%msg%n)
+			</pattern>
+		</encoder>
+	</appender>
+	<root level="info">
+		<appender-ref ref="console"/>
+	</root>
 
-    <!--输出到文件-->
-    <springProfile name="prod">
-        <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${log.filePath}/fabiaoqing.log</file>
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${log.filePath}/fabiaoqing.log.%d{yyyy-MM-dd}</fileNamePattern>
-                <maxHistory>15</maxHistory>
-            </rollingPolicy>
-            <encoder>
-                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{1000} - %msg%n</pattern>
-                <charset>UTF-8</charset>
-            </encoder>
-        </appender>
-        <logger name="com.samoy.fabiaoqing" level="info" additivity="false">
-            <appender-ref ref="file"/>
-        </logger>
-        <root level="warn">
-            <appender-ref ref="file" />
-        </root>
-    </springProfile>
+	<!--生产环境-->
+	<springProfile name="prod">
+		<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${log.filePath}/${application.name}.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>${log.filePath}/${application.name}.log.%d{yyyy-MM-dd}</fileNamePattern>
+				<maxHistory>15</maxHistory>
+			</rollingPolicy>
+			<encoder>
+				<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{1000} - %msg%n</pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</appender>
+
+		<root level="warn">
+			<appender-ref ref="file"/>
+		</root>
+	</springProfile>
 </configuration>

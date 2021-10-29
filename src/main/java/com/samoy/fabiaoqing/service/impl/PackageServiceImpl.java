@@ -54,7 +54,7 @@ public class PackageServiceImpl implements PackageService {
             packageDOList = packageDAO.selectByParentId(parentId);
             redisTemplate.opsForValue().set(redisKey, packageDOList);
         }
-        if (Objects.isNull(packageDOList)) {
+        if (CollectionUtils.isEmpty(packageDOList)) {
             throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
         return packageDOList.stream()
@@ -72,7 +72,7 @@ public class PackageServiceImpl implements PackageService {
             packageDOList = packageDAO.selectByNameLike(keyword);
             redisTemplate.opsForValue().set(redisKey, packageDOList);
         }
-        if (Objects.isNull(packageDOList)) {
+        if (CollectionUtils.isEmpty(packageDOList)) {
             throw new BusinessException(ResponseEnum.PACKAGE_NOT_FOUND);
         }
         return packageDOList.stream()

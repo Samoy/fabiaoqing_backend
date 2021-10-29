@@ -10,8 +10,10 @@ import com.samoy.fabiaoqing.service.EmoticonService;
 import com.samoy.fabiaoqing.util.MyBeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -43,7 +45,7 @@ public class EmoticonServiceImpl implements EmoticonService {
             emoticonDOList = emoticonDAO.selectByParentId(parentId);
             redisTemplate.opsForValue().set(REDIS_PREFIX + parentId, emoticonDOList);
         }
-        if (Objects.isNull(emoticonDOList)) {
+        if (CollectionUtils.isEmpty(emoticonDOList)) {
             throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
         }
         return emoticonDOList.stream()
@@ -57,7 +59,7 @@ public class EmoticonServiceImpl implements EmoticonService {
             emoticonDOList = emoticonDAO.selectByObjectId(objectId);
             redisTemplate.opsForValue().set(REDIS_PREFIX + objectId, emoticonDOList);
         }
-        if (Objects.isNull(emoticonDOList)) {
+        if (CollectionUtils.isEmpty(emoticonDOList)) {
             throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
         }
         return MyBeanUtils.convertEmoticonDOToDTO(emoticonDOList.get(0));
@@ -72,7 +74,7 @@ public class EmoticonServiceImpl implements EmoticonService {
             emoticonDOList = emoticonDAO.selectByNameLike(keyword);
             redisTemplate.opsForValue().set(redisKey, emoticonDOList);
         }
-        if (Objects.isNull(emoticonDOList)) {
+        if (CollectionUtils.isEmpty(emoticonDOList)) {
             throw new BusinessException(ResponseEnum.EMOTICON_NOT_FOUNT);
         }
         return emoticonDOList.stream()

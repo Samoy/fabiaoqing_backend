@@ -28,6 +28,10 @@ public class ScheduledTasks {
 
     /**
      * 定时删除所有可清空的Redis缓存，每天凌晨三点执行
+	 * Q:为什么要每天定时删除？
+	 * A:因为几乎每天都会有新表情包添加到数据库中，
+	 *   若不进行Redis清空操作，那么每次查询的都是Redis中的数据，
+	 *   每天新增的表情包就永远查询不到了。
      */
     @Scheduled(cron = "0 0 3 * * ?")
     public void deleteClearableKeys() {

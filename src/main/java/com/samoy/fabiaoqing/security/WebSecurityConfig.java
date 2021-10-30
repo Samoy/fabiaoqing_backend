@@ -20,8 +20,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(webSecurityInterceptor)
-                .addPathPatterns("/user/**")
-                .excludePathPatterns("/user/login", "/user/register", "/user/send_code", "/user/login_by_code", "/user/find_by_tel", "/user/reset_psd")
-                .addPathPatterns("/favorite/**");
+                .addPathPatterns("/user/**","/favorite/**")
+                .excludePathPatterns("/user/login", "/user/register", "/user/send_code", "/user/login_by_code", "/user/find_by_tel", "/user/reset_psd");
     }
 }

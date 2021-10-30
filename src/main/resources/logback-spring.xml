@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--此文件禁止修改-->
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 	<contextName>${application.name}</contextName>
-	<springProperty name="log.filePath" value="./logs"/>
+	<springProperty name="log.filePath" source="./logs"/>
 	<springProperty name="application.name" source="spring.application.name"/>
 
 	<!--默认输出到控制台(开发环境)-->
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%magenta(%d{HH:mm:ss.SSS}) %black([%thread]) %highlight(%-5level) %black(%logger{1000}) -
-				%highlight(%msg%n)
+			<pattern>
+				%magenta(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %logger{1000} - %highlight(%msg%n)
 			</pattern>
 		</encoder>
 	</appender>
